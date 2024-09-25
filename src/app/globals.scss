@@ -1,0 +1,139 @@
+@font-face {
+  font-family: "SUIT Variable";
+  font-weight: 100 900;
+  src: url("../../public/SUIT-Variable-woff2/SUIT-Variable.woff2")
+    format("woff2-variations");
+}
+
+@mixin Body5-R {
+  font-size: 10px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body4-R {
+  font-size: 12px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body3-R {
+  font-size: 13px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body2-R {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Body1-R {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 400;
+}
+
+@mixin Title5-M {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title5-SB {
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title4-M {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title4-SB {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title3-M {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title3-SB {
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title2-M {
+  font-size: 19px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Title2-SB {
+  font-size: 19px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin Title1-B {
+  font-size: 23px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 700;
+}
+
+@mixin Heading2 {
+  font-size: 15px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+@mixin Heading1 {
+  font-size: 24px;
+  letter-spacing: -0.03em;
+  line-height: 150%;
+  font-weight: 700;
+}
+
+$font-size: 16px;
+$--Primary-blue: #3689ff;
+$--Secondary: #7ae8f8;
+$--Chips: #eff6ff;
+$--Cancel: #ff4d4d;
+$--Black: #050606;
+$--White: #fff;
+
+$--gray-900: #212223;
+$--gray-800: #414245;
+$--gray-700: #5c5e62;
+$--gray-600: #7e8184;
+$--gray-500: #96999c;
+$--gray-400: #bfc5c9;
+$--gray-300: #d7dbde;
+$--gray-200: #ebecee;
+$--gray-100: #f5f5f6;
+$--gray-50: #f8f9fa;
+
+$--line-height: 150%;
