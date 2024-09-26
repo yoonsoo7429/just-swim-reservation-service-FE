@@ -1,3 +1,6 @@
+import { redirect } from "next/navigation";
+import { ROUTES } from "./_data/routes";
+
 export default function Page() {
-  return <main>just-swim</main>;
+  redirect(ROUTES.ONBOARDING.signin);
 }

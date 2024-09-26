@@ -1,0 +1,15 @@
+import { COMMON_COMPONENT_TEXT, COMMON_TEXT } from "./common";
+
+import {
+  SIGNUP_TEXT,
+  SELECT_TEXT,
+  SET_PROFILE_TEXT,
+  SIGNUP_COMPLETE_TEXT,
+} from "./beforeSignin";
+
+export const TEXT = {
+  SIGNUP_PAGE: { ...SIGNUP_TEXT },
+  TYPE_SELECT_PAGE: { ...SELECT_TEXT },
+  COMMON: { ...COMMON_TEXT },
+  COMMON_COMPONENT: { ...COMMON_COMPONENT_TEXT },
+};
