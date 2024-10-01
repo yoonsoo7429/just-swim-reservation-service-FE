@@ -1,5 +1,5 @@
 export const SIGNUP_TEXT = {
-  welcome: "수영인들을 위한 소통 창구",
+  welcome: "수영장 스케줄을 위한 서비스",
   notification: {
     first: "원활한 서비스 이용을 위해",
     second: "회원 가입 혹은 로그인을 진행해 주세요.",

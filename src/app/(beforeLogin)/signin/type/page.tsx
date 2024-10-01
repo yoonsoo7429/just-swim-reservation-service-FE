@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./pages.module.scss";
+import styles from "./page.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import { getTokenInCookies, setTokenInCookies, setUserType } from "@utils";
@@ -56,7 +56,12 @@ export default function Type() {
           token: token,
           profile: { userType: type },
         });
-        return router.push(ROUTES.ONBOARDING.profile);
+
+        if (type === USER_TYPE.CUSTOMER) {
+          return router.push(ROUTES.ONBOARDING.customer);
+        } else if (type === USER_TYPE.INSTRUCTOR) {
+          return router.push(ROUTES.ONBOARDING.instructor);
+        }
       }
     }
   };

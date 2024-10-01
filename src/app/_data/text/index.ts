@@ -7,9 +7,12 @@ import {
   SIGNUP_COMPLETE_TEXT,
 } from "./beforeSignin";
 
+import { CUSTOMER_PROFILE_TEXT } from "./customerProfile";
+
 export const TEXT = {
   SIGNUP_PAGE: { ...SIGNUP_TEXT },
   TYPE_SELECT_PAGE: { ...SELECT_TEXT },
   COMMON: { ...COMMON_TEXT },
   COMMON_COMPONENT: { ...COMMON_COMPONENT_TEXT },
+  CUSTOMER_PROFILE_PAGE: { ...CUSTOMER_PROFILE_TEXT },
 };

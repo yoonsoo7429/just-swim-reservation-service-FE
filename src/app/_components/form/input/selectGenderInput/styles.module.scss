@@ -1,0 +1,52 @@
+@import "@/globals.scss";
+
+.input_wrapper {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .gender_buttons {
+    display: flex;
+    gap: 15px;
+
+    .gender_button {
+      flex: 1;
+      padding: 10px 0;
+
+      border: 2px solid $--gray-100;
+      border-radius: 8px;
+
+      background-color: $--gray-50;
+      color: $--gray-600;
+      font-size: 16px;
+      font-weight: bold;
+
+      cursor: pointer;
+      transition:
+        background-color 0.2s,
+        color 0.2s,
+        border-color 0.2s;
+
+      &:hover {
+        background-color: $--gray-100;
+      }
+
+      &.selected {
+        background-color: $--Primary-blue;
+        color: #fff;
+        border-color: $--Primary-blue;
+      }
+    }
+  }
+
+  .error_message {
+    margin-top: 5px;
+
+    color: $--Cancel;
+    font-size: 14px;
+  }
+}

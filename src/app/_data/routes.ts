@@ -2,7 +2,8 @@ const SIGNIN_ROUTE = {
   root: "/",
   signin: "/signin",
   type: "/signin/type",
-  profile: "/signup/profile",
+  customer: "/signin/customerProfile",
+  instructor: "/signin/instructorProfile",
 } as const;
 
 const SCHEDULE_ROUTE = {

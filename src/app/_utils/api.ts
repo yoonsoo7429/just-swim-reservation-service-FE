@@ -42,7 +42,7 @@ export async function Fetch<T>({
   body = null,
 }: {
   url: string;
-  method?: "GET" | "POST" | "PATCH" | "DELsETE";
+  method?: "GET" | "POST" | "PATCH" | "DELETE";
   header?: {
     token?: boolean;
     json?: boolean;
