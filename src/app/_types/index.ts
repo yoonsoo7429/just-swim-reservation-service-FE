@@ -8,3 +8,4 @@ export * from "./typeCommon";
 export * from "./typeConstants";
 export * from "./typeModal";
 export * from "./typePicker";
+export * from "./typeLayout";

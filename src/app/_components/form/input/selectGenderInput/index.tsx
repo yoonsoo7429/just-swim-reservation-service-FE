@@ -24,12 +24,12 @@ function _SelectGenderInput(
   }: SelectGenderInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const [selectedGender, setSelectedGender] = useState<
-    "male" | "female" | null
-  >(null);
+  const [selectedGender, setSelectedGender] = useState<"남성" | "여성" | null>(
+    null
+  );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSelectGender = (gender: "male" | "female") => {
+  const handleSelectGender = (gender: "남성" | "여성") => {
     setSelectedGender(gender);
     if (inputRef.current) {
       inputRef.current.value = gender;
@@ -48,17 +48,17 @@ function _SelectGenderInput(
       <div className={styled.gender_buttons}>
         <button
           type="button"
-          className={`${styled.gender_button} ${selectedGender === "female" ? styled.selected : ""}`}
-          onClick={() => handleSelectGender("female")}
+          className={`${styled.gender_button} ${selectedGender === "여성" ? styled.selected : ""}`}
+          onClick={() => handleSelectGender("여성")}
         >
-          여자
+          여성
         </button>
         <button
           type="button"
-          className={`${styled.gender_button} ${selectedGender === "male" ? styled.selected : ""}`}
-          onClick={() => handleSelectGender("male")}
+          className={`${styled.gender_button} ${selectedGender === "남성" ? styled.selected : ""}`}
+          onClick={() => handleSelectGender("남성")}
         >
-          남자
+          남성
         </button>
       </div>
       <input

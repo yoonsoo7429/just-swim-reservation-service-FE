@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ChangeEvent,
   ForwardedRef,
@@ -12,8 +10,8 @@ import {
 } from "react";
 
 import { FileInputProps } from "@types";
-import { mergeRefs, randomId } from "@utils";
-import { ConfirmModal, ImageCarousel } from "@components";
+import { mergeRefs } from "@utils";
+import { ImageCarousel } from "@components";
 import { IconCancelWhite } from "@assets";
 
 import styled from "./styles.module.scss";
@@ -46,25 +44,30 @@ function _FileInput(
       target: { files },
     } = event;
 
+    // 파일이 선택되지 않았을 경우 경고 메시지
     if (!files || files.length === 0) {
       alert("파일을 추가해주세요.");
       return;
     }
 
-    const file = files[0];
+    const file = files[0]; // 첫 번째 파일만 처리
 
+    // 이미지 파일 여부 확인
     if (!file.type.startsWith("image")) {
       alert("이미지 파일만 추가할 수 있습니다.");
       return;
     }
 
+    // 파일 크기 확인
     if (file.size > size * 1024 * 1024) {
       alert(`${size}MB 이하의 파일만 업로드할 수 있습니다.`);
       return;
     }
 
+    // 이미지를 상태에 저장
     setUploadedImage(file);
 
+    // 파일 input에 파일 추가
     const store = new DataTransfer();
     store.items.add(file);
     if (inputRef.current) {
@@ -73,6 +76,9 @@ function _FileInput(
   };
 
   const deleteUploadedImage = () => {
+    if (uploadedImage) {
+      URL.revokeObjectURL(previewImage!);
+    }
     setUploadedImage(null);
 
     if (inputRef.current) {
@@ -83,14 +89,19 @@ function _FileInput(
 
   useEffect(() => {
     if (uploadedImage) {
-      setPreviewImage(URL.createObjectURL(uploadedImage));
-      setValue(name, uploadedImage);
+      const newPreviewImage = URL.createObjectURL(uploadedImage);
+      setPreviewImage(newPreviewImage);
+      if (setValue) {
+        setValue(name, uploadedImage);
+      }
+      // 컴포넌트가 언마운트 될 때 URL 해제
+      return () => URL.revokeObjectURL(newPreviewImage);
     } else {
       setPreviewImage(null);
     }
   }, [uploadedImage, setValue]);
 
-  const { modal, setModal, showModal, hideModal } = useModal();
+  const { modal, hideModal } = useModal();
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChangeImage(event);
@@ -101,7 +112,7 @@ function _FileInput(
     <>
       <div className={styled.input_wrapper}>
         <div className={styled.preview_wrapper}>
-          {previewImage && (
+          {previewImage ? (
             <div
               className={styled.preview_item}
               style={{
@@ -109,7 +120,9 @@ function _FileInput(
               }}
               onClick={(event: MouseEvent<HTMLDivElement>) => {
                 event.preventDefault();
-                showModal();
+                if (inputRef.current) {
+                  inputRef.current.click(); // 이미지 클릭 시 파일 선택 창 열기
+                }
               }}
             >
               <button
@@ -123,12 +136,12 @@ function _FileInput(
                 <IconCancelWhite width={14} height={14} />
               </button>
             </div>
+          ) : (
+            <label htmlFor={id} className={styled.add_label}>
+              <span>+</span>
+            </label>
           )}
         </div>
-        <label htmlFor={id} className={styled.add_label}>
-          <span>+</span>
-        </label>
-
         <input
           {...props}
           name={name}
@@ -136,7 +149,6 @@ function _FileInput(
           ref={mergeRefs(inputRef, ref)}
           type="file"
           hidden
-          readOnly
           onChange={handleOnChange}
         />
         {modal && previewImage && (
