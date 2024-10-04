@@ -3,7 +3,6 @@ import { CustomerBasicProps } from "@types";
 
 export async function formAction(data: CustomerBasicProps) {
   const result = await createCustomer(data);
-  console.log(result);
 
   if (result.success) {
     return { success: true };

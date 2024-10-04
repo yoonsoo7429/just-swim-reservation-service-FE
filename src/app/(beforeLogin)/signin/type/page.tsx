@@ -27,7 +27,21 @@ export default function Type() {
 
         const { data } = await getMyProfile();
         setAddUserProfile({ token: newToken, profile: data.data });
-        if (data.data.userType) {
+        // customer 정보 확인
+        if (
+          data.data.userType === USER_TYPE.CUSTOMER &&
+          data.data.customer.length === 0
+        ) {
+          return router.push(ROUTES.ONBOARDING.customer);
+        }
+        // instructor 정보 확인
+        if (
+          data.data.userType === USER_TYPE.CUSTOMER &&
+          data.data.customer.length === 0
+        ) {
+          return router.push(ROUTES.ONBOARDING.instructor);
+        }
+        if (data.data.customer.length > 0 || data.data.instructor.length > 0) {
           return router.push(ROUTES.SCHEDULE.root);
         }
         setToken(newToken);

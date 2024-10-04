@@ -10,7 +10,7 @@ export interface CustomerBasicProps {
 export interface CustomerProps {
   customerId: string;
   customerName: string;
-  customerProfileImage: string;
+  customerProfileImage: string | null;
   customerBirth: string;
   customerPhoneNumber: string;
   customerGender: string;
@@ -18,6 +18,6 @@ export interface CustomerProps {
   user: {
     userId: string;
   };
-  customerCreatedAt: Date;
-  customerUpdatedAt: Date;
+  customerCreatedAt: string;
+  customerUpdatedAt: string;
 }

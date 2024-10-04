@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const customerProfileSchema = z.object({
+  customerProfileImage: z.any().optional(),
   customerName: z
     .string()
     .min(1, "이름을 입력해주세요.")
     .max(30, "최대 30글자만 입력할 수 있습니다."),
-  customerProfileImage: z.any().optional(),
   customerBirth: z
     .string()
     .min(1, "생년월일을 입력해주세요.")

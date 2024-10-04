@@ -10,6 +10,8 @@ export interface UserEntity {
   email: string;
   userCreatedAt: string;
   userUpdatedAt: string;
+  customer: [];
+  instructor: [];
 }
 
 export interface PostUserLoginReq

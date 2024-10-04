@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.scss";
-import { FormEvent, HTMLAttributes, MouseEvent, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   TextInput,
@@ -48,15 +48,22 @@ export default function CustomerProfile() {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    watch,
   } = useForm<CustomerProfileType>({
     resolver: zodResolver(customerProfileSchema),
     mode: "onChange",
   });
 
-  const onSubmit = handleSubmit(async (input: CustomerProfileType) => {
-    const data = { ...input };
+  const watchFields = watch();
 
-    const result = await formAction(data);
+  useEffect(() => {
+    if (serverError.duplicate) {
+      setServerError({ title: "", duplicate: "" });
+    }
+  }, [JSON.stringify(watchFields)]);
+
+  const onSubmit = handleSubmit(async (input: CustomerProfileType) => {
+    const result = await formAction(input);
 
     if (result.success) {
       redirect("/schedule");
@@ -79,7 +86,10 @@ export default function CustomerProfile() {
           <div className={styles.form_body}>
             <div className={styles.upper_container}>
               <InputWrapper name="프로필 이미지">
-                <FileInput {...register("customerProfileImage")} />
+                <FileInput
+                  {...register("customerProfileImage")}
+                  name="customerProfileImage"
+                />
               </InputWrapper>
               <InputWrapper name="이름" required={true}>
                 <TextInput

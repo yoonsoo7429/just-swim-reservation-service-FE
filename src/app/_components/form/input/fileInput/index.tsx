@@ -45,7 +45,7 @@ function _FileInput(
     } = event;
 
     // 파일이 선택되지 않았을 경우 경고 메시지
-    if (!files || files.length === 0) {
+    if (!files) {
       alert("파일을 추가해주세요.");
       return;
     }
@@ -149,6 +149,7 @@ function _FileInput(
           ref={mergeRefs(inputRef, ref)}
           type="file"
           hidden
+          readOnly
           onChange={handleOnChange}
         />
         {modal && previewImage && (
