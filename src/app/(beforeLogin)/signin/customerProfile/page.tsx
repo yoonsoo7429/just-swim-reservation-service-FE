@@ -39,6 +39,7 @@ function InputWrapper({
 }
 
 export default function CustomerProfile() {
+  //에러 구분지어주기
   const [serverError, setServerError] = useState<{
     title: string;
     duplicate: string;
