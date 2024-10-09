@@ -52,9 +52,14 @@ function _FileInput(
 
     const file = files[0]; // 첫 번째 파일만 처리
 
+    // 파일이 존재하지 않으면 종료
+    if (!file) {
+      return;
+    }
+
     // 이미지 파일 여부 확인
     if (!file.type.startsWith("image")) {
-      alert("이미지 파일만 추가할 수 있습니다.");
+      // alert("이미지 파일만 추가할 수 있습니다.");
       return;
     }
 

@@ -37,7 +37,12 @@ export function SNSSignInButton({ sns }: { sns: Provider }) {
         checkType === USER_TYPE.INSTRUCTOR ||
         checkType === USER_TYPE.CUSTOMER
       ) {
-        return router.replace(ROUTES.SCHEDULE.root);
+        if (data?.data?.instructor?.length > 0) {
+          return router.replace(ROUTES.SCHEDULE.root);
+        }
+        return checkType === USER_TYPE.INSTRUCTOR
+          ? router.replace(ROUTES.ONBOARDING.instructor)
+          : router.replace(ROUTES.ONBOARDING.customer);
       }
       return router.replace(ROUTES.ONBOARDING.type);
     }

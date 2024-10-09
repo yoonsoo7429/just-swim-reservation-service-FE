@@ -38,3 +38,15 @@ export interface SelectGenderInputProps {
   valid?: boolean;
   errorMessage: string | undefined;
 }
+
+export interface AddressInputProps {
+  name: string;
+  valid?: boolean;
+  errorMessage: string | undefined;
+}
+
+export interface CareerInputProps {
+  name: string;
+  valid?: boolean;
+  errorMessage?: string;
+}

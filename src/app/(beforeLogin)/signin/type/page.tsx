@@ -36,8 +36,8 @@ export default function Type() {
         }
         // instructor 정보 확인
         if (
-          data.data.userType === USER_TYPE.CUSTOMER &&
-          data.data.customer.length === 0
+          data.data.userType === USER_TYPE.INSTRUCTOR &&
+          data.data.instructor.length === 0
         ) {
           return router.push(ROUTES.ONBOARDING.instructor);
         }

@@ -1,0 +1,82 @@
+@import "@/globals.scss";
+
+.career_input_wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .input_row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .text_input {
+      @include Title5-M;
+
+      width: 100%;
+      height: 51px;
+      padding: 15px 16px;
+
+      background-color: $--gray-50;
+      outline: 2px solid $--gray-100;
+      border-radius: 6px;
+      border: none;
+
+      &.invalid {
+        outline: 2px solid $--Cancel;
+      }
+
+      &:focus {
+        outline: 2px solid $--Primary-blue;
+      }
+
+      &::placeholder {
+        color: $--gray-500;
+      }
+    }
+
+    .label {
+      width: 51px;
+      height: 51px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+
+      & > span {
+        font-size: 1.5rem;
+        color: $--gray-500;
+      }
+    }
+
+    .add_label {
+      @extend .label;
+    }
+
+    .remove_label {
+      @extend .label;
+    }
+  }
+
+  .text_length,
+  .error_message {
+    @include Body4-R;
+    color: $--gray-500;
+    position: absolute;
+    right: 2px;
+    bottom: -22px;
+
+    &.count_valid {
+      color: $--Primary-blue;
+    }
+
+    &.count_invalid,
+    p {
+      color: $--Cancel;
+    }
+  }
+}

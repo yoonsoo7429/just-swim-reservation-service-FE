@@ -4,3 +4,4 @@ export * from "./dayInput";
 export * from "./dateInput";
 export * from "./selectGenderInput";
 export * from "./addressInput";
+export * from "./careerInput";

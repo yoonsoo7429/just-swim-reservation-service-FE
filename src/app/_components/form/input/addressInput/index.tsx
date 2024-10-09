@@ -8,7 +8,7 @@ import {
   useRef,
 } from "react";
 
-import { TextInputProps } from "@types";
+import { AddressInputProps } from "@types";
 import { IconInputValid } from "@assets";
 import { mergeRefs } from "@utils";
 
@@ -21,7 +21,7 @@ function _AddressInput(
     onChange = () => {},
     errorMessage = "",
     ...props
-  }: TextInputProps & InputHTMLAttributes<HTMLInputElement>,
+  }: AddressInputProps & InputHTMLAttributes<HTMLInputElement>,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const targetRef = useRef<HTMLInputElement>(null);

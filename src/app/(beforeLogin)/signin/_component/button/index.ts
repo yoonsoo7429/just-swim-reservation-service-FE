@@ -1,1 +1,1 @@
-import { SNSSignInButton } from "./snsSigninButton";
+export * from "./snsSigninButton";
