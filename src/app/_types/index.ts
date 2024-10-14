@@ -9,3 +9,5 @@ export * from "./typeConstants";
 export * from "./typeModal";
 export * from "./typePicker";
 export * from "./typeLayout";
+export * from "./typeCourse";
+export * from "./typeLecture";

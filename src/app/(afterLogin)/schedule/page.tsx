@@ -1,3 +1,5 @@
-export default function Page() {
-  return <main>schedule</main>;
+import { redirect } from "next/navigation";
+
+export default function Schedule() {
+  redirect("/schedule/monthly");
 }

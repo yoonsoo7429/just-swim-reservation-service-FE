@@ -1,3 +1,5 @@
+"use client";
+
 import { MouseEvent, useState } from "react";
 
 export function useModal() {

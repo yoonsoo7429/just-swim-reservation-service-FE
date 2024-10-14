@@ -7,6 +7,11 @@ import IconCancelWhite from "./icon_cancel_white.svg";
 import IconDelete from "./icon_delete.svg";
 import IconArrowRightSmall from "./icon_arrow_right_small.svg";
 import IconCheckboxInvalid from "./icon_checkbox.svg";
+import IconLocation from "./icon_location.svg";
+import IconRepeat from "./icon_repeat.svg";
+import IconCalendarHome from "./icon_calendar_home.svg";
+import IconClass from "./icon_class.svg";
+import IconAdd from "./icon_add.svg";
 
 export {
   IconKakao,
@@ -18,4 +23,9 @@ export {
   IconDelete,
   IconArrowRightSmall,
   IconCheckboxInvalid,
+  IconLocation,
+  IconRepeat,
+  IconCalendarHome,
+  IconClass,
+  IconAdd,
 };
