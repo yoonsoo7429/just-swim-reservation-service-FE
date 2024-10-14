@@ -41,12 +41,13 @@
     .main_info {
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       .title_info {
         display: flex;
         flex-direction: column;
 
-        gap: 1px;
+        gap: 2px;
 
         .class_name {
           @include Title4-M;
@@ -104,6 +105,7 @@
 
     .student_info {
       display: flex;
+      align-items: center;
 
       .student {
         display: flex;
@@ -128,11 +130,17 @@
 
         border-radius: 50%;
 
-        margin-left: -6px;
-        font-size: 8px;
+        margin-left: 8px;
+        font-size: 10px;
 
         background-color: $--White;
         box-shadow: 0px 0px 10px 1px rgb(158, 158, 158, 0.2);
+
+        p {
+          margin: 0;
+          text-align: center;
+          white-space: nowrap;
+        }
       }
 
       .empty_student {

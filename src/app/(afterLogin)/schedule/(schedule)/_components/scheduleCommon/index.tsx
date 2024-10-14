@@ -1,16 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-
 import { WEEK_DAYS } from "@data";
 import { getToday } from "@utils";
 
 import styled from "./styles.module.scss";
 
 export function ScheduleCommon({ count }: { count: number }) {
-  const pathname = usePathname();
-
   const today = getToday();
 
   return (
@@ -33,14 +28,6 @@ export function ScheduleCommon({ count }: { count: number }) {
           </span>
         </h2>
       </header>
-      <div className={styled.schedule_tab}>
-        <Link
-          href="/schedule/monthly"
-          className={`${styled.schedule_link} ${pathname === "/schedule/monthly" ? styled.active : ""}`}
-        >
-          <span>월간</span>
-        </Link>
-      </div>
     </section>
   );
 }

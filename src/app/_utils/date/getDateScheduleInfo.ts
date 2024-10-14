@@ -7,14 +7,14 @@ import { sortSchedule } from "@utils";
 import { ScheduleSummary } from "@types";
 import { WEEK_DAYS } from "@data";
 
-import { convertKoreanTime, getMonth, getToday } from "./getDateInfo";
+import { getMonth, getToday } from "./getDateInfo";
 
 async function getMonthlyScheduleInfo(
   month: string
 ): Promise<ScheduleSummary[] | []> {
   const result = [];
 
-  const thisMonthInfo = getMonth(convertKoreanTime(new Date(month)));
+  const thisMonthInfo = getMonth();
   const scheduleInfo = (await getCachedInProgressSchedule()) || [];
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
@@ -25,17 +25,17 @@ async function getMonthlyScheduleInfo(
     };
 
     for (const course of scheduleInfo) {
-      const filteredLectures = course.lecture.filter((lecture) => {
+      const filteredCourses = course.lecture.filter((lecture) => {
         return (
-          new Date(lecture.lectureDate).getTime() ===
-          new Date(thisMonthInfo[i]).getTime()
+          new Date(lecture.lectureDate).toDateString() ===
+          new Date(thisMonthInfo[i]).toDateString()
         );
       });
 
-      if (filteredLectures.length > 0) {
+      if (filteredCourses.length > 0) {
         const courseData = {
           ...course,
-          lecture: filteredLectures,
+          course: filteredCourses,
         };
 
         nowInfo.courses.push(courseData);

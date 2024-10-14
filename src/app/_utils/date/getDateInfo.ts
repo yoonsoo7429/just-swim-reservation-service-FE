@@ -1,11 +1,7 @@
 import { numberFormat } from "@utils";
 
 export function getToday() {
-  const date = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
-    new Date().getDate()
-  );
+  const date = new Date();
   const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
   const kstGap = 9 * 60 * 60 * 1000;
   const today = new Date(utc + kstGap);
@@ -23,7 +19,6 @@ export function convertKoreanTime(date: Date) {
 
 export function getThisWeek() {
   const result = [];
-
   const today = getToday();
   const nowDay = today.getDay();
 
@@ -45,7 +40,6 @@ export function getThisWeek() {
 const calculatePrevMonth = (startDay: Date) => {
   const prevDate = startDay.getDate();
   const prevDay = startDay.getDay();
-
   const days = [];
 
   for (let i = prevDate - prevDay; i <= prevDate; i++) {

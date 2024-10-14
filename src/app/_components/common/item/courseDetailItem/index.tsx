@@ -2,16 +2,33 @@ import Image from "next/image";
 
 import { IconRepeat, NoProfileImage } from "@assets";
 import { CourseProps } from "@types";
-import { numberFormat, randomId } from "@utils";
+import { numberFormat } from "@utils";
 
 import styled from "./styles.module.scss";
+import { DAY_ENG_TO_KOR, RANDOM_COLOR } from "@data";
 
 const primaryColor = "#3498db";
 
 export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
   const startTime = parseInt(schedule.courseStartTime.split(":")[0]);
-  const lectureCount = schedule.lecture.length;
-  const capacityInfo = `${lectureCount}명/${schedule.courseCapacity}명`;
+
+  // 중복된 수강생 제거
+  const uniqueStudents = Array.from(
+    new Set(schedule.lecture.map((lecture) => lecture.user.userId))
+  ).map((userId) =>
+    schedule.lecture.find((lecture) => lecture.user.userId === userId)
+  );
+
+  const studentCount = uniqueStudents.length;
+  const capacityInfo = `${studentCount}명/${schedule.courseCapacity}명`;
+
+  // 요일 변환
+  const translatedDays = schedule.courseDays
+    .split(",")
+    .map((day) => DAY_ENG_TO_KOR[day.trim() as keyof typeof DAY_ENG_TO_KOR]);
+
+  // 랜덤 색
+  const getRandomColor = RANDOM_COLOR();
 
   return (
     <div className={styled.container}>
@@ -23,14 +40,11 @@ export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
       </div>
       <div
         className={styled.content}
-        style={{ boxShadow: `3px 0 0 0 ${primaryColor} inset` }}
+        style={{ boxShadow: `3px 0 0 0 ${getRandomColor} inset` }}
       >
         <div className={styled.main_info}>
           <div className={styled.title_info}>
-            <p
-              className={styled.class_name}
-              style={{ color: `${primaryColor}` }}
-            >
+            <p className={styled.class_name} style={{ color: getRandomColor }}>
               {schedule.courseTitle}
             </p>
             <p className={styled.class_info}>
@@ -39,15 +53,15 @@ export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
           </div>
 
           <div className={styled.student_info}>
-            {schedule.lecture?.map((lecture) => (
-              <div key={randomId()} className={styled.student}>
+            {uniqueStudents.map((lecture, index) => (
+              <div key={index} className={styled.student}>
                 <Image
                   src={
-                    lecture.user.customer.customerProfileImage
+                    lecture?.user.customer?.customerProfileImage
                       ? lecture.user.customer.customerProfileImage
                       : NoProfileImage
                   }
-                  alt={`${lecture.user.userId}`}
+                  alt={`${lecture?.user.userId}`}
                   width={20}
                   height={20}
                 />
@@ -72,7 +86,7 @@ export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
             <IconRepeat width={14} height={14} />
             <span>매주</span>
             <span>
-              {schedule.courseDays.split("").join(", ")}
+              {translatedDays.join(", ")}
               <span>요일</span>
             </span>
           </p>

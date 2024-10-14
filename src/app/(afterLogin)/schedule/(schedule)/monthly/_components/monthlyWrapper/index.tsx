@@ -61,22 +61,18 @@ export function MonthlyWrapper() {
           {nowDateInfo && (
             <div className={styled.dot_wrapper}>
               <div key={randomId()} className={styled.count}>
-                {nowDateInfo.courses.map((schedule, index) => {
-                  if (index >= 5) return null;
-
-                  return (
-                    <div
-                      key={randomId()}
-                      className={styled.dot}
-                      style={{
-                        backgroundColor:
-                          new Date(nowDate) < today || isDisabled
-                            ? ""
-                            : primaryColor,
-                      }}
-                    />
-                  );
-                })}
+                {nowDateInfo.courses.slice(0, 5).map(() => (
+                  <div
+                    key={randomId()}
+                    className={styled.dot}
+                    style={{
+                      backgroundColor:
+                        new Date(nowDate) < today || isDisabled
+                          ? ""
+                          : primaryColor,
+                    }}
+                  />
+                ))}
               </div>
             </div>
           )}
