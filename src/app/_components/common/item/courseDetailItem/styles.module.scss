@@ -103,11 +103,11 @@
       }
     }
 
-    .student_info {
+    .member_info {
       display: flex;
       align-items: center;
 
-      .student {
+      .member {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -120,7 +120,7 @@
         margin-left: -6px;
       }
 
-      .student_count {
+      .member_count {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -143,7 +143,7 @@
         }
       }
 
-      .empty_student {
+      .empty_member {
         @include Body5-R;
 
         position: absolute;

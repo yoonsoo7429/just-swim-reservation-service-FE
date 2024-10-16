@@ -9,18 +9,21 @@ import { DAY_ENG_TO_KOR, RANDOM_COLOR } from "@data";
 
 const primaryColor = "#3498db";
 
-export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
+export function CourseDetailItem({
+  schedule,
+  selectedDate,
+}: {
+  schedule: CourseProps;
+  selectedDate: string;
+}) {
   const startTime = parseInt(schedule.courseStartTime.split(":")[0]);
 
-  // 중복된 수강생 제거
-  const uniqueStudents = Array.from(
-    new Set(schedule.lecture.map((lecture) => lecture.user.userId))
-  ).map((userId) =>
-    schedule.lecture.find((lecture) => lecture.user.userId === userId)
+  const members = schedule.lecture.filter(
+    (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
   );
 
-  const studentCount = uniqueStudents.length;
-  const capacityInfo = `${studentCount}명/${schedule.courseCapacity}명`;
+  const memberCount = members.length;
+  const capacityInfo = `${memberCount}명/${schedule.courseCapacity}명`;
 
   // 요일 변환
   const translatedDays = schedule.courseDays
@@ -52,13 +55,13 @@ export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
             </p>
           </div>
 
-          <div className={styled.student_info}>
-            {uniqueStudents.map((lecture, index) => (
-              <div key={index} className={styled.student}>
+          <div className={styled.member_info}>
+            {members.map((lecture, index) => (
+              <div key={index} className={styled.member}>
                 <Image
                   src={
-                    lecture?.user.customer?.customerProfileImage
-                      ? lecture.user.customer.customerProfileImage
+                    lecture?.user.customer[0]?.customerProfileImage
+                      ? lecture.user.customer[0].customerProfileImage
                       : NoProfileImage
                   }
                   alt={`${lecture?.user.userId}`}
@@ -69,7 +72,7 @@ export function CourseDetailItem({ schedule }: { schedule: CourseProps }) {
             ))}
             {schedule.lecture && schedule.lecture.length !== 0 ? (
               <div
-                className={styled.student_count}
+                className={styled.member_count}
                 style={{ color: `${primaryColor}` }}
               >
                 <p>{capacityInfo}</p>

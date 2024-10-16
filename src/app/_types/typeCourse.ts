@@ -49,7 +49,7 @@ export interface CourseProps {
         customerAddress: string;
         customerCreatedAt: string;
         customerUpdatedAt: string;
-      };
+      }[];
     };
   }[];
 }
@@ -58,4 +58,14 @@ export interface ScheduleSummary {
   date: string;
   day: string;
   courses: CourseProps[];
+}
+
+export interface SelectedCourseProps {
+  lectureId: string;
+  userId: string;
+  userType: string;
+  customerProfileImage: string | null;
+  customerName: string;
+  customerPhoneNumber: string;
+  customerAddress: string;
 }

@@ -2,7 +2,7 @@
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 
-import { CourseProps } from "@types";
+import { CourseProps, SelectedCourseProps } from "@types";
 import { CourseDetailItem, Portal } from "@components";
 import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
@@ -25,6 +25,12 @@ export function CourseList({
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
+
+  const [selectedCourse, setSelectedCourse] = useState<SelectedCourseProps[]>(
+    []
+  );
+
+  const [showMemberList, setShowMemberList] = useState<boolean>(false);
 
   const todayInfo = monthlyInfo.find((info) => info.date === selectedDate);
   const scheduleInfo = todayInfo?.courses || [];
@@ -81,6 +87,29 @@ export function CourseList({
     setMovingCursorPosition(0);
   };
 
+  const handleCourseClick = (lectures: CourseProps["lecture"]) => {
+    const members = lectures.filter(
+      (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
+    );
+    console.log(members);
+    if (showMemberList) {
+      setShowMemberList(false);
+      setSelectedCourse([]);
+    } else {
+      const membersDetail: SelectedCourseProps[] = members.map((lecture) => ({
+        lectureId: lecture.lectureId,
+        userId: lecture.user.userId,
+        userType: lecture.user.userType,
+        customerProfileImage: lecture.user.customer[0].customerProfileImage,
+        customerName: lecture.user.customer[0].customerName,
+        customerPhoneNumber: lecture.user.customer[0].customerPhoneNumber,
+        customerAddress: lecture.user.customer[0].customerAddress,
+      }));
+      setSelectedCourse(membersDetail);
+      setShowMemberList(true);
+    }
+  };
+
   return (
     <Portal>
       <div
@@ -111,15 +140,47 @@ export function CourseList({
         </div>
         <div className={styled.list}>
           {scheduleInfo.length !== 0 ? (
-            scheduleInfo.map((schedule) => {
-              return <CourseDetailItem key={randomId()} schedule={schedule} />;
-            })
+            scheduleInfo.map((schedule) => (
+              <div
+                key={randomId()}
+                onClick={() => handleCourseClick(schedule.lecture)}
+              >
+                <CourseDetailItem
+                  schedule={schedule}
+                  selectedDate={selectedDate}
+                />
+              </div>
+            ))
           ) : (
             <div>
               <p>등록된 수업이 없습니다.</p>
             </div>
           )}
         </div>
+        {showMemberList && selectedCourse.length > 0 && (
+          <div className={styled.memberList}>
+            <ul>
+              {selectedCourse.map((member) => (
+                <li key={member.lectureId} className={styled.memberItem}>
+                  {member.customerProfileImage ? (
+                    <img
+                      src={member.customerProfileImage}
+                      alt={`${member.customerName} 프로필 이미지`}
+                      className={styled.profileImage}
+                    />
+                  ) : (
+                    <div className={styled.defaultProfileImage}>
+                      기본 이미지
+                    </div>
+                  )}
+                  <div className={styled.memberInfo}>
+                    <p>{member.customerName}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </Portal>
   );
