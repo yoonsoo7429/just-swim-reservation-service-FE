@@ -1,13 +1,13 @@
 export const WEEK_DAYS = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
 export const WEEK_DAYS_TO_ENG = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ] as const;
 
 export const DAY_KOR_TO_ENG = {

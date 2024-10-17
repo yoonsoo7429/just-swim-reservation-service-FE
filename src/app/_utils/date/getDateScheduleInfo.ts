@@ -5,7 +5,7 @@ import { unstable_cache } from "next/cache";
 import { getCachedInProgressSchedule } from "@apis";
 import { sortSchedule } from "@utils";
 import { ScheduleSummary } from "@types";
-import { WEEK_DAYS } from "@data";
+import { WEEK_DAYS, WEEK_DAYS_TO_ENG } from "@data";
 
 import { getMonth, getToday } from "./getDateInfo";
 
@@ -35,10 +35,22 @@ async function getMonthlyScheduleInfo(
       if (filteredCourses.length > 0) {
         const courseData = {
           ...course,
-          course: filteredCourses,
+          lecture: filteredCourses,
         };
 
         nowInfo.courses.push(courseData);
+      }
+
+      if (course.lecture.length === 0) {
+        const selectedDays = course.courseDays.split(",");
+
+        if (selectedDays.includes(WEEK_DAYS_TO_ENG[i % 7])) {
+          const courseData = {
+            ...course,
+            lecture: [],
+          };
+          nowInfo.courses.push(courseData);
+        }
       }
     }
 

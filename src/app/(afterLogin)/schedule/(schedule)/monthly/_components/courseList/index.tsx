@@ -91,7 +91,6 @@ export function CourseList({
     const members = lectures.filter(
       (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
     );
-    console.log(members);
     if (showMemberList) {
       setShowMemberList(false);
       setSelectedCourse([]);
@@ -156,31 +155,31 @@ export function CourseList({
               <p>등록된 수업이 없습니다.</p>
             </div>
           )}
-        </div>
-        {showMemberList && selectedCourse.length > 0 && (
-          <div className={styled.memberList}>
-            <ul>
-              {selectedCourse.map((member) => (
-                <li key={member.lectureId} className={styled.memberItem}>
-                  {member.customerProfileImage ? (
-                    <img
-                      src={member.customerProfileImage}
-                      alt={`${member.customerName} 프로필 이미지`}
-                      className={styled.profileImage}
-                    />
-                  ) : (
-                    <div className={styled.defaultProfileImage}>
-                      기본 이미지
+          {showMemberList && selectedCourse.length > 0 && (
+            <div className={styled.memberList}>
+              <ul>
+                {selectedCourse.map((member) => (
+                  <li key={member.lectureId} className={styled.memberItem}>
+                    {member.customerProfileImage ? (
+                      <img
+                        src={member.customerProfileImage}
+                        alt={`${member.customerName} 프로필 이미지`}
+                        className={styled.profileImage}
+                      />
+                    ) : (
+                      <div className={styled.defaultProfileImage}>
+                        기본 이미지
+                      </div>
+                    )}
+                    <div className={styled.memberInfo}>
+                      <p>{member.customerName}</p>
                     </div>
-                  )}
-                  <div className={styled.memberInfo}>
-                    <p>{member.customerName}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </Portal>
   );
