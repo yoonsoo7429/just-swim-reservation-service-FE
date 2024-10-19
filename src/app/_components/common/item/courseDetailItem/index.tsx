@@ -5,7 +5,7 @@ import { CourseProps } from "@types";
 import { numberFormat } from "@utils";
 
 import styled from "./styles.module.scss";
-import { DAY_ENG_TO_KOR, RANDOM_COLOR } from "@data";
+import { DAY_ENG_TO_KOR } from "@data";
 
 const primaryColor = "#3498db";
 
@@ -30,9 +30,6 @@ export function CourseDetailItem({
     .split(",")
     .map((day) => DAY_ENG_TO_KOR[day.trim() as keyof typeof DAY_ENG_TO_KOR]);
 
-  // 랜덤 색
-  const getRandomColor = RANDOM_COLOR();
-
   return (
     <div className={styled.container}>
       <div className={styled.time_info}>
@@ -43,11 +40,11 @@ export function CourseDetailItem({
       </div>
       <div
         className={styled.content}
-        style={{ boxShadow: `3px 0 0 0 ${getRandomColor} inset` }}
+        style={{ boxShadow: `3px 0 0 0 ${primaryColor} inset` }}
       >
         <div className={styled.main_info}>
           <div className={styled.title_info}>
-            <p className={styled.class_name} style={{ color: getRandomColor }}>
+            <p className={styled.class_name} style={{ color: primaryColor }}>
               {schedule.courseTitle}
             </p>
             <p className={styled.class_info}>

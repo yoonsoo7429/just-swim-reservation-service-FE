@@ -8,6 +8,7 @@ import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
 
 import styled from "./styles.module.scss";
+import { MemberList } from "../memberList";
 
 export function CourseList({
   selectedDate,
@@ -26,11 +27,13 @@ export function CourseList({
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
 
-  const [selectedCourse, setSelectedCourse] = useState<SelectedCourseProps[]>(
-    []
-  );
-
-  const [showMemberList, setShowMemberList] = useState<boolean>(false);
+  // 각각의 강의에 대한 상태 관리
+  const [selectedCourse, setSelectedCourse] = useState<{
+    [key: string]: SelectedCourseProps[];
+  }>({});
+  const [showMemberList, setShowMemberList] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const todayInfo = monthlyInfo.find((info) => info.date === selectedDate);
   const scheduleInfo = todayInfo?.courses || [];
@@ -87,25 +90,44 @@ export function CourseList({
     setMovingCursorPosition(0);
   };
 
-  const handleCourseClick = (lectures: CourseProps["lecture"]) => {
+  const handleCourseClick = (
+    courseId: string,
+    lectures: CourseProps["lecture"]
+  ) => {
     const members = lectures.filter(
       (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
     );
-    if (showMemberList) {
-      setShowMemberList(false);
-      setSelectedCourse([]);
+
+    // 선택된 강의의 상태를 토글
+    setShowMemberList((prev) => ({
+      ...prev,
+      [courseId]: !prev[courseId],
+    }));
+
+    if (showMemberList[courseId]) {
+      // 이미 열려 있는 경우 닫기
+      setSelectedCourse((prev) => ({
+        ...prev,
+        [courseId]: [],
+      }));
     } else {
+      // 새로운 멤버 정보를 선택
       const membersDetail: SelectedCourseProps[] = members.map((lecture) => ({
         lectureId: lecture.lectureId,
         userId: lecture.user.userId,
         userType: lecture.user.userType,
-        customerProfileImage: lecture.user.customer[0].customerProfileImage,
-        customerName: lecture.user.customer[0].customerName,
-        customerPhoneNumber: lecture.user.customer[0].customerPhoneNumber,
-        customerAddress: lecture.user.customer[0].customerAddress,
+        customerProfileImage:
+          lecture.user.customer[0]?.customerProfileImage || "",
+        customerName: lecture.user.customer[0]?.customerName || "",
+        customerPhoneNumber:
+          lecture.user.customer[0]?.customerPhoneNumber || "",
+        customerAddress: lecture.user.customer[0]?.customerAddress || "",
       }));
-      setSelectedCourse(membersDetail);
-      setShowMemberList(true);
+
+      setSelectedCourse((prev) => ({
+        ...prev,
+        [courseId]: membersDetail,
+      }));
     }
   };
 
@@ -140,43 +162,26 @@ export function CourseList({
         <div className={styled.list}>
           {scheduleInfo.length !== 0 ? (
             scheduleInfo.map((schedule) => (
-              <div
-                key={randomId()}
-                onClick={() => handleCourseClick(schedule.lecture)}
-              >
-                <CourseDetailItem
-                  schedule={schedule}
-                  selectedDate={selectedDate}
-                />
+              <div key={randomId()}>
+                <div
+                  onClick={() =>
+                    handleCourseClick(schedule.courseId, schedule.lecture)
+                  }
+                >
+                  <CourseDetailItem
+                    schedule={schedule}
+                    selectedDate={selectedDate}
+                  />
+                </div>
+                {showMemberList[schedule.courseId] &&
+                  selectedCourse[schedule.courseId]?.length > 0 && (
+                    <MemberList members={selectedCourse[schedule.courseId]} />
+                  )}
               </div>
             ))
           ) : (
             <div>
               <p>등록된 수업이 없습니다.</p>
-            </div>
-          )}
-          {showMemberList && selectedCourse.length > 0 && (
-            <div className={styled.memberList}>
-              <ul>
-                {selectedCourse.map((member) => (
-                  <li key={member.lectureId} className={styled.memberItem}>
-                    {member.customerProfileImage ? (
-                      <img
-                        src={member.customerProfileImage}
-                        alt={`${member.customerName} 프로필 이미지`}
-                        className={styled.profileImage}
-                      />
-                    ) : (
-                      <div className={styled.defaultProfileImage}>
-                        기본 이미지
-                      </div>
-                    )}
-                    <div className={styled.memberInfo}>
-                      <p>{member.customerName}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
             </div>
           )}
         </div>
