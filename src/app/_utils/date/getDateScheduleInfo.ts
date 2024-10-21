@@ -2,7 +2,7 @@
 
 import { unstable_cache } from "next/cache";
 
-import { getCachedInProgressSchedule } from "@apis";
+import { getCachedInProgressSchedule, getCachedMyProfile } from "@apis";
 import { sortSchedule } from "@utils";
 import { ScheduleSummary } from "@types";
 import { WEEK_DAYS, WEEK_DAYS_TO_ENG } from "@data";
@@ -16,6 +16,9 @@ async function getMonthlyScheduleInfo(
 
   const thisMonthInfo = getMonth();
   const scheduleInfo = (await getCachedInProgressSchedule()) || [];
+
+  const userInfo = await getCachedMyProfile();
+  const userType = userInfo?.userType ?? null;
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
     const nowInfo: ScheduleSummary = {
@@ -35,6 +38,7 @@ async function getMonthlyScheduleInfo(
       if (filteredCourses.length > 0) {
         const courseData = {
           ...course,
+          userType,
           lecture: filteredCourses,
         };
 
@@ -47,6 +51,7 @@ async function getMonthlyScheduleInfo(
         if (selectedDays.includes(WEEK_DAYS_TO_ENG[i % 7])) {
           const courseData = {
             ...course,
+            userType,
             lecture: [],
           };
           nowInfo.courses.push(courseData);

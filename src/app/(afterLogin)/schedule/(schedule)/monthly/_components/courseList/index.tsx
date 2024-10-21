@@ -98,21 +98,19 @@ export function CourseList({
       (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
     );
 
-    // 선택된 강의의 상태를 토글
     setShowMemberList((prev) => ({
       ...prev,
       [courseId]: !prev[courseId],
     }));
 
     if (showMemberList[courseId]) {
-      // 이미 열려 있는 경우 닫기
       setSelectedCourse((prev) => ({
         ...prev,
         [courseId]: [],
       }));
     } else {
-      // 새로운 멤버 정보를 선택
       const membersDetail: SelectedCourseProps[] = members.map((lecture) => ({
+        courseId,
         lectureId: lecture.lectureId,
         userId: lecture.user.userId,
         userType: lecture.user.userType,
@@ -136,7 +134,7 @@ export function CourseList({
       <div
         className={styled.container}
         style={{
-          height: window.innerHeight - (266 + itemHeight + itemHeight),
+          height: window.innerHeight - (170 + itemHeight + itemHeight),
           transform: `translateY(${movingCursorPositon}px)`,
         }}
       >
@@ -175,7 +173,10 @@ export function CourseList({
                 </div>
                 {showMemberList[schedule.courseId] &&
                   selectedCourse[schedule.courseId]?.length > 0 && (
-                    <MemberList members={selectedCourse[schedule.courseId]} />
+                    <MemberList
+                      members={selectedCourse[schedule.courseId]}
+                      userType={schedule.userType}
+                    />
                   )}
               </div>
             ))

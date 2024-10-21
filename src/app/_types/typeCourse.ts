@@ -1,3 +1,5 @@
+import { UserType } from "./users";
+
 export interface CourseBasicProps {
   courseTitle: string;
   courseDays: string;
@@ -7,6 +9,7 @@ export interface CourseBasicProps {
 }
 
 export interface CourseProps {
+  userType: UserType | null;
   courseTitle: string;
   courseId: string;
   courseDays: string;
@@ -34,7 +37,7 @@ export interface CourseProps {
     lectureDeletedAt: string | null;
     user: {
       userId: string;
-      userType: string;
+      userType: UserType;
       provider: string;
       email: string;
       userCreatedAt: string;
@@ -61,9 +64,10 @@ export interface ScheduleSummary {
 }
 
 export interface SelectedCourseProps {
+  courseId: string;
   lectureId: string;
   userId: string;
-  userType: string;
+  userType: string | null;
   customerProfileImage: string | null;
   customerName: string;
   customerPhoneNumber: string;
