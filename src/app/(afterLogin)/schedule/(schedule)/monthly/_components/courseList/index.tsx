@@ -2,7 +2,7 @@
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 
-import { CourseProps, SelectedCourseProps } from "@types";
+import { CourseForMemberInfoProps, CourseProps } from "@types";
 import { CourseDetailItem, Portal } from "@components";
 import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
@@ -29,7 +29,7 @@ export function CourseList({
 
   // 각각의 강의에 대한 상태 관리
   const [selectedCourse, setSelectedCourse] = useState<{
-    [key: string]: SelectedCourseProps[];
+    [key: string]: CourseForMemberInfoProps[];
   }>({});
   const [showMemberList, setShowMemberList] = useState<{
     [key: string]: boolean;
@@ -92,6 +92,7 @@ export function CourseList({
 
   const handleCourseClick = (
     courseId: string,
+    instructorUserId: string,
     lectures: CourseProps["lecture"]
   ) => {
     const members = lectures.filter(
@@ -109,18 +110,21 @@ export function CourseList({
         [courseId]: [],
       }));
     } else {
-      const membersDetail: SelectedCourseProps[] = members.map((lecture) => ({
-        courseId,
-        lectureId: lecture.lectureId,
-        userId: lecture.user.userId,
-        userType: lecture.user.userType,
-        customerProfileImage:
-          lecture.user.customer[0]?.customerProfileImage || "",
-        customerName: lecture.user.customer[0]?.customerName || "",
-        customerPhoneNumber:
-          lecture.user.customer[0]?.customerPhoneNumber || "",
-        customerAddress: lecture.user.customer[0]?.customerAddress || "",
-      }));
+      const membersDetail: CourseForMemberInfoProps[] = members.map(
+        (lecture) => ({
+          courseId,
+          instructorUserId,
+          lectureId: lecture.lectureId,
+          userId: lecture.user.userId,
+          userType: lecture.user.userType,
+          customerProfileImage:
+            lecture.user.customer[0]?.customerProfileImage || "",
+          customerName: lecture.user.customer[0]?.customerName || "",
+          customerPhoneNumber:
+            lecture.user.customer[0]?.customerPhoneNumber || "",
+          customerAddress: lecture.user.customer[0]?.customerAddress || "",
+        })
+      );
 
       setSelectedCourse((prev) => ({
         ...prev,
@@ -129,12 +133,16 @@ export function CourseList({
     }
   };
 
+  const handleDateChange = (lectureId: string, newDate: string) => {
+    console.log(`Lecture ${lectureId} will be moved to ${newDate}`);
+  };
+
   return (
     <Portal>
       <div
         className={styled.container}
         style={{
-          height: window.innerHeight - (170 + itemHeight + itemHeight),
+          height: window.innerHeight - (20 + itemHeight + itemHeight),
           transform: `translateY(${movingCursorPositon}px)`,
         }}
       >
@@ -163,7 +171,11 @@ export function CourseList({
               <div key={randomId()}>
                 <div
                   onClick={() =>
-                    handleCourseClick(schedule.courseId, schedule.lecture)
+                    handleCourseClick(
+                      schedule.courseId,
+                      schedule.user.userId,
+                      schedule.lecture
+                    )
                   }
                 >
                   <CourseDetailItem
@@ -176,6 +188,8 @@ export function CourseList({
                     <MemberList
                       members={selectedCourse[schedule.courseId]}
                       userType={schedule.userType}
+                      courses={monthlyInfo}
+                      onDateChange={handleDateChange}
                     />
                   )}
               </div>

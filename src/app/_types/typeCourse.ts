@@ -63,8 +63,9 @@ export interface ScheduleSummary {
   courses: CourseProps[];
 }
 
-export interface SelectedCourseProps {
+export interface CourseForMemberInfoProps {
   courseId: string;
+  instructorUserId: string;
   lectureId: string;
   userId: string;
   userType: string | null;
