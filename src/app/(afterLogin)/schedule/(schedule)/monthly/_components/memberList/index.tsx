@@ -5,8 +5,9 @@ import { CourseForMemberInfoProps, CourseProps, ScheduleSummary } from "@types";
 import { NoProfileImage } from "@assets";
 import styled from "./styles.module.scss";
 import DatePicker from "react-datepicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WEEK_DAYS_TO_ENG } from "@data";
+import { formAction } from "./action";
 
 export function MemberList({
   members,
@@ -20,6 +21,13 @@ export function MemberList({
   onDateChange: (lectureId: string, newDate: string) => void;
 }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [availableCourseList, setAvailableCourseList] = useState<CourseProps[]>(
+    []
+  );
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+  const [showDatePicker, setShowDatePicker] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const getAvailableDates = (userId: string) => {
     const availableCourses = courses
@@ -74,7 +82,38 @@ export function MemberList({
     };
   };
 
-  const handleMoveSlot = (lectureId: string, courseId: string) => {
+  const handleDateChange = (date: Date | null, memberId: string) => {
+    setSelectedDate(date);
+    if (date) {
+      const filteredCourses = courses
+        .flatMap((schedule) => schedule.courses)
+        .filter((course) => {
+          const courseDays = course.courseDays
+            .split(",")
+            .map((day) => day.trim());
+          const dayOfWeek = date.getDay();
+          return (
+            course.user.userId === memberId &&
+            (course.lecture.some(
+              (lecture) =>
+                lecture.lectureDate === date.toISOString().split("T")[0]
+            ) ||
+              courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek]))
+          );
+        });
+      const uniqueCourses = Array.from(
+        new Map(
+          filteredCourses.map((course) => [course.courseId, course])
+        ).values()
+      );
+
+      setAvailableCourseList(uniqueCourses);
+    } else {
+      setAvailableCourseList([]);
+    }
+  };
+
+  const handleMoveSlot = async (lectureId: string, courseId: string) => {
     if (selectedDate) {
       const formattedDate = selectedDate.toISOString().split("T")[0];
 
@@ -86,13 +125,37 @@ export function MemberList({
         const courseCapacity = course.courseCapacity;
         const membersNum = course.lecture.length;
         if (courseCapacity > membersNum) {
+          const data = {
+            courseId: course.courseId,
+            lectureDate: formattedDate,
+            lectureStartTime: course.courseStartTime,
+            lectureEndTime: course.courseEndTime,
+          };
+
+          const result = await formAction(data, lectureId);
           onDateChange(lectureId, formattedDate);
           setSelectedDate(null);
         } else {
-          alert("해당 강좌에 빈 자리가 없습니다. 다른 강좌로 이동해 주세요.");
+          alert("해당 강좌에 빈 자리가 없습니다. 다른 날짜를 선택해주세요.");
         }
       }
     }
+  };
+
+  const handleCancel = (memberId: string) => {
+    setSelectedDate(null);
+    setSelectedCourse(null);
+    setShowDatePicker((prev) => ({
+      ...prev,
+      [memberId]: false,
+    }));
+  };
+
+  const toggleDatePicker = (memberId: string) => {
+    setShowDatePicker((prev) => ({
+      ...prev,
+      [memberId]: !prev[memberId],
+    }));
   };
 
   return (
@@ -114,26 +177,60 @@ export function MemberList({
               <p>{member.customerName}</p>
             </div>
 
-            {userType === "instructor" ? (
+            {userType === "instructor" || userType === "customer" ? (
               <div className={styled.lectureDateInput}>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="yyyy.MM.dd"
-                  className={styled.lectureDatePicker}
-                  filterDate={getAvailableDates(member.instructorUserId)}
-                />
-                <button
-                  onClick={() =>
-                    handleMoveSlot(member.lectureId, member.courseId)
-                  }
-                >
-                  Move Slot
-                </button>
-              </div>
-            ) : userType === "customer" ? (
-              <div className={styled.moveSlotButton}>
-                <button>Move to Available Slot</button>
+                {showDatePicker[member.lectureId] ? (
+                  <>
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={(date) =>
+                        handleDateChange(date, member.instructorUserId)
+                      }
+                      dateFormat="yyyy.MM.dd"
+                      className={styled.lectureDatePicker}
+                      filterDate={getAvailableDates(member.instructorUserId)}
+                    />
+                    {selectedDate && availableCourseList.length > 0 && (
+                      <select
+                        value={selectedCourse || ""}
+                        onChange={(e) => setSelectedCourse(e.target.value)}
+                        className={styled.courseTimeSelect}
+                      >
+                        <option value="" disabled>
+                          시간을 선택해주세요
+                        </option>
+                        {availableCourseList.map((course) => (
+                          <option key={course.courseId} value={course.courseId}>
+                            {course.courseStartTime} - {course.courseEndTime}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <div className={styled.buttonContainer}>
+                      <button
+                        onClick={() =>
+                          handleMoveSlot(member.lectureId, selectedCourse || "")
+                        }
+                        className={styled.moveSlotButton}
+                      >
+                        변경 완료
+                      </button>
+                      <button
+                        onClick={() => handleCancel(member.lectureId)}
+                        className={styled.cancelButton}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => toggleDatePicker(member.lectureId)}
+                    className={styled.dateChangeButton}
+                  >
+                    일정 변경
+                  </button>
+                )}
               </div>
             ) : null}
           </div>

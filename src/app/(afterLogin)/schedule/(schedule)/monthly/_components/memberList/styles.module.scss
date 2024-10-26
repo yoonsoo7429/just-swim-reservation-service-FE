@@ -20,7 +20,7 @@
 
   .memberItem {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -36,6 +36,7 @@
       flex-direction: column;
       justify-content: center;
       flex-grow: 1;
+      margin-right: 10px;
 
       p {
         margin: 0;
@@ -49,10 +50,14 @@
     }
 
     .lectureDateInput {
-      position: relative;
-      z-index: 10;
-      input {
-        margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      margin-left: 10px;
+
+      input,
+      select {
         padding: 5px;
         border-radius: 5px;
         border: 1px solid $--gray-300;
@@ -66,24 +71,67 @@
       }
     }
 
+    .buttonContainer {
+      display: flex;
+      gap: 8px;
+    }
+
     .moveSlotButton {
-      button {
-        margin-left: 10px;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 8px;
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      background-color: $--Primary-blue;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+
+      &:hover {
         background-color: $--Primary-blue;
-        color: $--White;
-        cursor: pointer;
+        transform: scale(1.05);
+      }
 
-        &:hover {
-          background-color: darken($--Primary-blue, 10%);
-        }
+      &:active {
+        transform: scale(1);
+      }
+    }
 
-        &:focus {
-          outline: none;
-          box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
-        }
+    .dateChangeButton {
+      background-color: $--Primary-blue;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $--Primary-blue;
+      }
+    }
+
+    .cancelButton {
+      background-color: $--Primary-blue;
+      color: white;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 4px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+
+      &:hover {
+        background-color: $--Primary-blue;
       }
     }
   }

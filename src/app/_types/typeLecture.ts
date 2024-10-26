@@ -26,3 +26,10 @@ export interface LectureProps {
     courseDeletedAt: string | null;
   };
 }
+
+export interface EditLectureProps {
+  courseId: string;
+  lectureDate: string;
+  lectureStartTime: string;
+  lectureEndTime: string;
+}
