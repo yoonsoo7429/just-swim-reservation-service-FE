@@ -1,12 +1,10 @@
 "use client";
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
-
 import { CourseForMemberInfoProps, CourseProps } from "@types";
-import { CourseDetailItem, Portal } from "@components";
+import { CourseDetailItem, Portal, StatusModal } from "@components"; // StatusModal import
 import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
-
 import styled from "./styles.module.scss";
 import { MemberList } from "../memberList";
 
@@ -22,7 +20,6 @@ export function CourseList({
   unshowClass: () => void;
 }) {
   const date = new Date(selectedDate);
-
   const [movingCursorPositon, setMovingCursorPosition] = useState<number>(0);
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
@@ -35,6 +32,10 @@ export function CourseList({
     [key: string]: boolean;
   }>({});
 
+  // StatusModal 상태 관리
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+
   const todayInfo = monthlyInfo.find((info) => info.date === selectedDate);
   const scheduleInfo = todayInfo?.courses || [];
 
@@ -44,26 +45,17 @@ export function CourseList({
   };
 
   const handleDragMove = (event: MouseEvent<HTMLButtonElement>) => {
-    if (!startDrag.current) {
-      return;
-    }
-
-    if (event.pageY - startCursorPosition.current <= 0) {
-      return;
-    }
+    if (!startDrag.current) return;
+    if (event.pageY - startCursorPosition.current <= 0) return;
 
     setMovingCursorPosition(event.pageY - startCursorPosition.current);
   };
 
   const handleDragEnd = () => {
-    if (!startDrag.current) {
-      return;
-    }
-
+    if (!startDrag.current) return;
     if (movingCursorPositon > 100) {
       unshowClass();
     }
-
     setMovingCursorPosition(0);
     startDrag.current = false;
   };
@@ -73,10 +65,7 @@ export function CourseList({
   };
 
   const handleTouchMove = (event: TouchEvent<HTMLButtonElement>) => {
-    if (event.targetTouches[0].pageY - startCursorPosition.current <= 0) {
-      return;
-    }
-
+    if (event.targetTouches[0].pageY - startCursorPosition.current <= 0) return;
     setMovingCursorPosition(
       event.targetTouches[0].pageY - startCursorPosition.current
     );
@@ -86,7 +75,6 @@ export function CourseList({
     if (movingCursorPositon > 100) {
       unshowClass();
     }
-
     setMovingCursorPosition(0);
   };
 
@@ -135,6 +123,8 @@ export function CourseList({
 
   const handleDateChange = (lectureId: string, newDate: string) => {
     console.log(`Lecture ${lectureId} will be moved to ${newDate}`);
+    setStatusMessage("변경이 완료되었습니다."); // 상태 메시지 설정
+    setShowStatusModal(true); // 모달 표시
   };
 
   return (
@@ -189,6 +179,7 @@ export function CourseList({
                       members={selectedCourse[schedule.courseId]}
                       userType={schedule.userType}
                       courses={monthlyInfo}
+                      selectedDate={selectedDate}
                       onDateChange={handleDateChange}
                     />
                   )}
@@ -200,6 +191,14 @@ export function CourseList({
             </div>
           )}
         </div>
+
+        {/* StatusModal 추가 */}
+        <StatusModal
+          statusMessage={statusMessage}
+          isVisible={showStatusModal}
+          onClose={() => setShowStatusModal(false)}
+          duration={2000}
+        />
       </div>
     </Portal>
   );

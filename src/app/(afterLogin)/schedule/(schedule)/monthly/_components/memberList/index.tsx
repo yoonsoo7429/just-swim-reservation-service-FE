@@ -5,7 +5,7 @@ import { CourseForMemberInfoProps, CourseProps, ScheduleSummary } from "@types";
 import { NoProfileImage } from "@assets";
 import styled from "./styles.module.scss";
 import DatePicker from "react-datepicker";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { WEEK_DAYS_TO_ENG } from "@data";
 import { formAction } from "./action";
 
@@ -13,14 +13,16 @@ export function MemberList({
   members,
   userType,
   courses,
+  selectedDate,
   onDateChange,
 }: {
   members: CourseForMemberInfoProps[];
   userType: string | null;
   courses: ScheduleSummary[];
+  selectedDate: string;
   onDateChange: (lectureId: string, newDate: string) => void;
 }) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedEditDate, setSelectedEditDate] = useState<Date | null>(null);
   const [availableCourseList, setAvailableCourseList] = useState<CourseProps[]>(
     []
   );
@@ -83,7 +85,7 @@ export function MemberList({
   };
 
   const handleDateChange = (date: Date | null, memberId: string) => {
-    setSelectedDate(date);
+    setSelectedEditDate(date);
     if (date) {
       const filteredCourses = courses
         .flatMap((schedule) => schedule.courses)
@@ -114,8 +116,12 @@ export function MemberList({
   };
 
   const handleMoveSlot = async (lectureId: string, courseId: string) => {
-    if (selectedDate) {
-      const formattedDate = selectedDate.toISOString().split("T")[0];
+    if (selectedEditDate) {
+      const formattedDate = new Date(
+        selectedEditDate.getTime() + 9 * 60 * 60 * 1000
+      )
+        .toISOString()
+        .split("T")[0];
 
       const course = courses
         .flatMap((schedule) => schedule.courses)
@@ -126,7 +132,7 @@ export function MemberList({
         const membersNum = course.lecture.length;
         if (courseCapacity > membersNum) {
           const data = {
-            courseId: course.courseId,
+            courseId: Number(course.courseId),
             lectureDate: formattedDate,
             lectureStartTime: course.courseStartTime,
             lectureEndTime: course.courseEndTime,
@@ -134,7 +140,8 @@ export function MemberList({
 
           const result = await formAction(data, lectureId);
           onDateChange(lectureId, formattedDate);
-          setSelectedDate(null);
+
+          setSelectedEditDate(null);
         } else {
           alert("해당 강좌에 빈 자리가 없습니다. 다른 날짜를 선택해주세요.");
         }
@@ -143,7 +150,7 @@ export function MemberList({
   };
 
   const handleCancel = (memberId: string) => {
-    setSelectedDate(null);
+    setSelectedEditDate(null);
     setSelectedCourse(null);
     setShowDatePicker((prev) => ({
       ...prev,
@@ -157,6 +164,13 @@ export function MemberList({
       [memberId]: !prev[memberId],
     }));
   };
+
+  // 오늘 날짜
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const courseDate = new Date(selectedDate);
+  courseDate.setHours(0, 0, 0, 0);
 
   return (
     <div className={styled.memberList}>
@@ -182,7 +196,7 @@ export function MemberList({
                 {showDatePicker[member.lectureId] ? (
                   <>
                     <DatePicker
-                      selected={selectedDate}
+                      selected={selectedEditDate}
                       onChange={(date) =>
                         handleDateChange(date, member.instructorUserId)
                       }
@@ -190,7 +204,7 @@ export function MemberList({
                       className={styled.lectureDatePicker}
                       filterDate={getAvailableDates(member.instructorUserId)}
                     />
-                    {selectedDate && availableCourseList.length > 0 && (
+                    {selectedEditDate && availableCourseList.length > 0 && (
                       <select
                         value={selectedCourse || ""}
                         onChange={(e) => setSelectedCourse(e.target.value)}
@@ -201,7 +215,8 @@ export function MemberList({
                         </option>
                         {availableCourseList.map((course) => (
                           <option key={course.courseId} value={course.courseId}>
-                            {course.courseStartTime} - {course.courseEndTime}
+                            {course.courseTitle} : {course.courseStartTime} -{" "}
+                            {course.courseEndTime}
                           </option>
                         ))}
                       </select>
@@ -224,12 +239,14 @@ export function MemberList({
                     </div>
                   </>
                 ) : (
-                  <button
-                    onClick={() => toggleDatePicker(member.lectureId)}
-                    className={styled.dateChangeButton}
-                  >
-                    일정 변경
-                  </button>
+                  courseDate > today && (
+                    <button
+                      onClick={() => toggleDatePicker(member.lectureId)}
+                      className={styled.dateChangeButton}
+                    >
+                      일정 변경
+                    </button>
+                  )
                 )}
               </div>
             ) : null}

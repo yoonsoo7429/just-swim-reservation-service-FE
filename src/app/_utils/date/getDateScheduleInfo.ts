@@ -20,6 +20,15 @@ async function getMonthlyScheduleInfo(
   const userInfo = await getCachedMyProfile();
   const userType = userInfo?.userType ?? null;
 
+  const today = new Date();
+  const year = new Date().getFullYear();
+  const currentMonth = today.getMonth();
+  const startOfMonth = new Date(Date.UTC(year, currentMonth, 1));
+  const endOfMonth = new Date(Date.UTC(year, currentMonth + 1, 0));
+
+  const formattedStartOfMonth = `${year}-${String(currentMonth + 1).padStart(2, "0")}-${String(startOfMonth.getDate()).padStart(2, "0")}`;
+  const formattedEndOfMonth = `${year}-${String(currentMonth + 1).padStart(2, "0")}-${String(endOfMonth.getDate()).padStart(2, "0")}`;
+
   for (let i = 0; i < thisMonthInfo.length; i++) {
     const nowInfo: ScheduleSummary = {
       date: thisMonthInfo[i],
@@ -29,9 +38,12 @@ async function getMonthlyScheduleInfo(
 
     for (const course of scheduleInfo) {
       const filteredCourses = course.lecture.filter((lecture) => {
+        const lectureDate = lecture.lectureDate;
         return (
-          new Date(lecture.lectureDate).toDateString() ===
-          new Date(thisMonthInfo[i]).toDateString()
+          lectureDate >= formattedStartOfMonth &&
+          lectureDate <= formattedEndOfMonth &&
+          new Date(lectureDate).toDateString() ===
+            new Date(thisMonthInfo[i]).toDateString()
         );
       });
 

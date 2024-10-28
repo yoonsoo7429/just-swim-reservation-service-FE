@@ -28,7 +28,7 @@ export interface LectureProps {
 }
 
 export interface EditLectureProps {
-  courseId: string;
+  courseId: number;
   lectureDate: string;
   lectureStartTime: string;
   lectureEndTime: string;

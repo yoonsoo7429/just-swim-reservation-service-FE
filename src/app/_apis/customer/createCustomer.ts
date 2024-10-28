@@ -31,7 +31,6 @@ export async function createCustomer(
 
     return result;
   } catch (error) {
-    // 오류 처리
     return {
       success: false,
       message:

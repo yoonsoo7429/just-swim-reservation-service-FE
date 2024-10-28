@@ -42,3 +42,10 @@ export interface MonthModalProps extends ModalBodyProps {
   updateValue: ({ year, month }: { year: number; month: number }) => void;
   unshowModal: () => void;
 }
+
+export interface StatusModalProps {
+  statusMessage: string;
+  isVisible: boolean;
+  onClose: () => void;
+  duration?: number;
+}
