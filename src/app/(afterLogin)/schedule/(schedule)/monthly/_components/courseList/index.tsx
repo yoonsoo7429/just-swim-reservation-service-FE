@@ -24,7 +24,6 @@ export function CourseList({
   const startCursorPosition = useRef<number>(0);
   const startDrag = useRef<boolean>(false);
 
-  // 각각의 강의에 대한 상태 관리
   const [selectedCourse, setSelectedCourse] = useState<{
     [key: string]: CourseForMemberInfoProps[];
   }>({});

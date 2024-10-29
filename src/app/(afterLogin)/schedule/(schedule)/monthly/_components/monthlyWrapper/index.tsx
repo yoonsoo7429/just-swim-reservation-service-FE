@@ -9,7 +9,7 @@ import {
 } from "react";
 
 import {
-  getCachedMonthlyScheduleInfo,
+  getMonthlyScheduleInfo,
   getToday,
   getWeekNumber,
   numberFormat,
@@ -97,7 +97,7 @@ export function MonthlyWrapper() {
 
   useEffect(() => {
     const getMonthInfo = async () => {
-      const result = await getCachedMonthlyScheduleInfo(
+      const result = await getMonthlyScheduleInfo(
         `${currentYear}.${currentMonth + 1}`
       );
 
