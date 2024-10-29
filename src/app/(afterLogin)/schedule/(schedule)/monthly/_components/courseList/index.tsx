@@ -2,7 +2,7 @@
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 import { CourseForMemberInfoProps, CourseProps } from "@types";
-import { CourseDetailItem, Portal, StatusModal } from "@components"; // StatusModal import
+import { CourseDetailItem, Portal, StatusModal } from "@components";
 import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
 import styled from "./styles.module.scss";
@@ -32,7 +32,6 @@ export function CourseList({
     [key: string]: boolean;
   }>({});
 
-  // StatusModal 상태 관리
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
@@ -121,10 +120,13 @@ export function CourseList({
     }
   };
 
-  const handleDateChange = (lectureId: string, newDate: string) => {
-    console.log(`Lecture ${lectureId} will be moved to ${newDate}`);
-    setStatusMessage("변경이 완료되었습니다."); // 상태 메시지 설정
-    setShowStatusModal(true); // 모달 표시
+  const handleDateChange = () => {
+    setStatusMessage("변경이 완료되었습니다.");
+    setShowStatusModal(true);
+    setTimeout(() => {
+      setShowStatusModal(false);
+      window.location.reload();
+    }, 1000);
   };
 
   return (
@@ -132,7 +134,7 @@ export function CourseList({
       <div
         className={styled.container}
         style={{
-          height: window.innerHeight - (20 + itemHeight + itemHeight),
+          height: window.innerHeight - (230 + itemHeight + itemHeight),
           transform: `translateY(${movingCursorPositon}px)`,
         }}
       >
@@ -191,8 +193,6 @@ export function CourseList({
             </div>
           )}
         </div>
-
-        {/* StatusModal 추가 */}
         <StatusModal
           statusMessage={statusMessage}
           isVisible={showStatusModal}
