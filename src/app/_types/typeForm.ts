@@ -50,3 +50,11 @@ export interface CareerInputProps {
   valid?: boolean;
   errorMessage?: string;
 }
+
+export interface TimeInputProps {
+  name: string;
+  valid?: boolean;
+  errorMessage: string | undefined;
+  defaultValue?: string;
+  defaultTimeValue?: string;
+}

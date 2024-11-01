@@ -8,6 +8,21 @@ export interface CourseBasicProps {
   courseCapacity: number;
 }
 
+export interface CourseCreateProps {
+  courseTitle: string;
+  courseDays: string;
+  courseStartTime: string;
+  courseEndTime: string;
+  courseCapacity: number;
+  user: {
+    userId: string;
+  };
+  courseId: string;
+  courseCreatedAt: string;
+  courseUpdatedAt: string;
+  courseDeletedAt: string | null;
+}
+
 export interface CourseProps {
   userType: UserType | null;
   courseTitle: string;
@@ -73,4 +88,46 @@ export interface CourseForMemberInfoProps {
   customerName: string;
   customerPhoneNumber: string;
   customerAddress: string;
+}
+
+export interface CourseDetailProps {
+  courseId: string;
+  courseTitle: string;
+  courseDays: string;
+  courseStartTime: string;
+  courseEndTime: string;
+  courseCapacity: number;
+  courseCreatedAt: string;
+  courseUpdatedAt: string;
+  courseDeletedAt: string | null;
+  user: {
+    userId: string;
+    userType: string;
+    provider: string;
+    email: string;
+    userCreatedAt: string;
+    userUpdatedAt: string;
+  };
+  member: {
+    memberId: string;
+    memberCreatedAt: string;
+    memberUpdatedAt: string;
+    user: {
+      userId: string;
+      userType: string;
+      provider: string;
+      email: string;
+      userCreatedAt: string;
+      userUpdatedAt: string;
+    };
+  }[];
+  lecture: {
+    lectureId: string;
+    lectureDate: string;
+    lectureStartTime: string;
+    lectureEndTime: string;
+    lectureCreatedAt: string;
+    lectureUpdatedAt: string;
+    lectureDeletedAt: string | null;
+  }[];
 }

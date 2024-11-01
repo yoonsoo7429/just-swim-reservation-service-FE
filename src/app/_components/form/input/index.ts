@@ -5,3 +5,4 @@ export * from "./dateInput";
 export * from "./selectGenderInput";
 export * from "./addressInput";
 export * from "./careerInput";
+export * from "./timeInput";
