@@ -18,3 +18,8 @@ export interface MonthPickerProps {
   monthValue: number;
   updateValue: ({ year, month }: { year: number; month: number }) => void;
 }
+
+export interface NumberPickerProps {
+  value: string;
+  updateValue: (value: string) => void;
+}

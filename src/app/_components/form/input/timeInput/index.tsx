@@ -26,7 +26,7 @@ const checkValue = (defalutValue: string) => {
 const TimeBlock = ({
   selectedTime,
   changeSelectedTime,
-  defaultTimeValue = "10:30",
+  defaultTimeValue = "06:00",
   placeholder = "",
   valid,
 }: {
@@ -72,7 +72,7 @@ function _TimeInput(
     name,
     valid = true,
     defaultValue = "",
-    defaultTimeValue = "10:30",
+    defaultTimeValue = "06:00",
     errorMessage = "",
     ...props
   }: TimeInputProps & InputHTMLAttributes<HTMLInputElement>,

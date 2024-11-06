@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, MouseEvent, useState } from "react";
+import { HTMLAttributes, MouseEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -17,6 +17,7 @@ import { formAction } from "./action";
 import { courseSchema, courseType } from "./schema";
 
 import styled from "./styles.module.scss";
+import { CapacityInput } from "@/_components/form/input/capacityInput";
 
 function InputWrapper({
   children,
@@ -49,7 +50,7 @@ export function FormBody({
   course?: courseType;
 }) {
   const isModify = type === "modify";
-  const [serverErrors, setServerErrors] = useState<{
+  const [serverError, setServerError] = useState<{
     title: string;
     duplicate: string;
   }>({ title: "", duplicate: "" });
@@ -58,19 +59,33 @@ export function FormBody({
     register,
     handleSubmit,
     formState: { errors, isValid },
+    watch,
   } = useForm<courseType>({
     resolver: zodResolver(courseSchema),
     mode: "onChange",
   });
 
+  const watchFields = watch();
+
+  useEffect(() => {
+    if (serverError.duplicate) {
+      setServerError({ title: "", duplicate: "" });
+    }
+  }, [JSON.stringify(watchFields)]);
+
   const onSubmit = handleSubmit(async (input: courseType) => {
+    const timeRange = input.courseTime.split("-");
     const data = {
-      ...input,
+      courseTitle: input.courseTitle,
+      courseStartTime: timeRange[0],
+      courseEndTime: timeRange[1],
+      courseCapacity: parseInt(input.courseCapacity),
+      courseDays: input.courseDays,
     };
 
     const result = await formAction(data, type, id);
 
-    setServerErrors({
+    setServerError({
       ...result,
     });
   });
@@ -79,23 +94,7 @@ export function FormBody({
     await onSubmit();
   };
 
-  const clearTitleError = (event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-
-    setServerErrors((s) => ({
-      ...s,
-      title: "",
-    }));
-  };
-
-  const clearDuplicateError = (event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-
-    setServerErrors((s) => ({
-      ...s,
-      duplicate: "",
-    }));
-  };
+  console.log(watchFields);
 
   return (
     <div>
@@ -107,15 +106,11 @@ export function FormBody({
           <form action={onValid} className={styled.form}>
             <div className={styled.form_body}>
               <div className={styled.upper_container}>
-                <InputWrapper
-                  name="수업명"
-                  required={true}
-                  onClick={clearTitleError}
-                >
+                <InputWrapper name="수업명" required={true}>
                   <TextInput
                     {...register("courseTitle")}
                     placeholder="수업명을 입력해주세요"
-                    valid={!errors.courseTitle && !serverErrors.title}
+                    valid={!errors.courseTitle && !serverError.title}
                     errorMessage={errors.courseTitle?.message}
                     maxLength={15}
                     defaultValue={isModify ? course?.courseTitle : ""}
@@ -124,30 +119,33 @@ export function FormBody({
               </div>
               <div className={styled.divider} />
               <div className={styled.lower_container}>
-                <InputWrapper
-                  name="강좌 시간"
-                  required={true}
-                  onClick={clearDuplicateError}
-                >
+                <InputWrapper name="강좌 시간" required={true}>
                   <TimeInput
-                    {...register("courseStartTime")}
+                    {...register("courseTime")}
                     placeholder="시간 선택"
-                    defaultValue={isModify ? course?.courseStartTime : ""}
-                    valid={!errors.courseStartTime && !serverErrors.duplicate}
-                    errorMessage={errors.courseStartTime?.message}
+                    defaultValue={
+                      isModify && course?.courseTime ? course.courseTime : ""
+                    }
+                    valid={!errors.courseTime && !serverError.duplicate}
+                    errorMessage={errors.courseTime?.message}
                   />
                 </InputWrapper>
-                <InputWrapper
-                  name="강좌 요일"
-                  required={true}
-                  onClick={clearDuplicateError}
-                >
+                <InputWrapper name="강좌 요일" required={true}>
                   <DayInput
                     {...register("courseDays")}
                     placeholder="강좌 요일을 선택해 주세요"
                     defaultValue={isModify ? course?.courseDays : ""}
-                    valid={!errors.courseDays && !serverErrors.duplicate}
+                    valid={!errors.courseDays && !serverError.duplicate}
                     errorMessage={errors.courseDays?.message}
+                  />
+                </InputWrapper>
+                <InputWrapper name="강좌 인원" required={true}>
+                  <CapacityInput
+                    {...register("courseCapacity")}
+                    placeholder="강좌 인원을 선택해주세요"
+                    defaultValue={isModify ? course?.courseDays : ""}
+                    valid={!errors.courseCapacity && !serverError.duplicate}
+                    errorMessage={errors.courseCapacity?.message}
                   />
                 </InputWrapper>
               </div>
@@ -155,22 +153,17 @@ export function FormBody({
             <div className={styled.button_container}>
               <FormButton
                 text="확인"
-                active={isValid && !serverErrors.duplicate}
+                active={isValid && !serverError.duplicate}
+                disabled={!isValid || !!serverError.duplicate}
               />
             </div>
           </form>
-          {(serverErrors.title || serverErrors.duplicate) && (
+          {(serverError.title || serverError.duplicate) && (
             <div className={styled.error_container}>
-              {serverErrors.title && (
+              {serverError.duplicate && (
                 <div className={styled.error_message}>
                   <IconCheckboxInvalid />
-                  <p>{serverErrors.title}</p>
-                </div>
-              )}
-              {serverErrors.duplicate && (
-                <div className={styled.error_message}>
-                  <IconCheckboxInvalid />
-                  <p>{serverErrors.duplicate}</p>
+                  <p>{serverError.duplicate}</p>
                 </div>
               )}
             </div>

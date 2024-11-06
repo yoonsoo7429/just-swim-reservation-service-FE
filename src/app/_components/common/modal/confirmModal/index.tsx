@@ -13,7 +13,7 @@ export function ConfirmModal({
       {children}
       <div className={styled.modal_btn}>
         <ConfirmButton text="취소" kind="confirm-sub" onClick={hideModal} />
-        <ConfirmButton text="변경" kind="confirm" onClick={confirmCallback} />
+        <ConfirmButton text="선택" kind="confirm" onClick={confirmCallback} />
       </div>
     </ModalBody>
   );

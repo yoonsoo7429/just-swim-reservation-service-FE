@@ -50,30 +50,27 @@ const makeInitialValue = (defaultValue: string): DayProps => {
 };
 
 const makeInputValue = (days: DayProps) => {
-  let result = "";
+  const result = [];
 
   for (const day of WEEK_DAYS_TO_ENG) {
     if (days[day]) {
-      result += DAY_ENG_TO_KOR[day];
+      result.push(day);
     }
   }
 
-  return result;
+  return result.join(",");
 };
 
 const makePrintValue = (days: DayProps) => {
-  let result = "";
+  const result = [];
 
   for (const day of WEEK_DAYS_TO_ENG) {
     if (days[day]) {
-      result += `${DAY_ENG_TO_KOR[day]}, `;
+      result.push(DAY_ENG_TO_KOR[day]);
     }
   }
 
-  result = result.slice(0, -2);
-  result += "요일";
-
-  return result;
+  return `${result.join(", ")}요일`;
 };
 
 const checkDefaultValue = (defaultValue: string) => {

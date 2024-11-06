@@ -58,3 +58,11 @@ export interface TimeInputProps {
   defaultValue?: string;
   defaultTimeValue?: string;
 }
+
+export interface CapacityInputProps {
+  name: string;
+  valid?: boolean;
+  errorMessage: string | undefined;
+  defaultValue?: string;
+  defaultCapacityValue?: string;
+}

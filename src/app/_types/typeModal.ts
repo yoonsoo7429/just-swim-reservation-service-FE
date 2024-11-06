@@ -49,3 +49,8 @@ export interface StatusModalProps {
   onClose: () => void;
   duration?: number;
 }
+
+export interface CapacityModalProps extends ModalBodyProps {
+  capacityValue: string;
+  setCapacityValue: (value: string) => void;
+}

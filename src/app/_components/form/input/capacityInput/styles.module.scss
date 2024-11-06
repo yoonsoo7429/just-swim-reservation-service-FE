@@ -1,0 +1,79 @@
+@import "@/globals.scss";
+
+.wrapper {
+  position: relative;
+  display: flex;
+
+  .icon_wrapper {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translate(0, -50%);
+    cursor: pointer;
+  }
+
+  .divider {
+    width: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $--gray-500;
+  }
+
+  & > div:first-child > div:first-child {
+    padding-left: 48px;
+  }
+
+  .valid_wrapper {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translate(0, -50%);
+  }
+
+  .valid_wrapper.empty {
+    display: none;
+  }
+
+  .error_message {
+    position: absolute;
+    left: 2px;
+    bottom: -22px;
+
+    & > p {
+      @include Body4-R;
+      color: $--Cancel;
+    }
+  }
+}
+
+.input_wrapper {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .capacity_input {
+    @include Title5-M;
+
+    width: 100%;
+    height: 51px;
+    padding: 15px 16px;
+    background-color: $--gray-50;
+    outline: 2px solid $--gray-100;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    &.empty {
+      color: $--gray-500;
+    }
+
+    &.invalid {
+      outline: 2px solid $--Cancel;
+    }
+  }
+}

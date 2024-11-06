@@ -14,10 +14,10 @@ export function ScheduleCommon({ count }: { count: number }) {
         <h2>
           <span
             className={styled.today}
-          >{`${today.getDate()}일 ${WEEK_DAYS[today.getDay()]}요일, 오늘`}</span>
+          >{`${today.getDate()}일 ${WEEK_DAYS[today.getDay()]}요일`}</span>
           <span className={styled.today_schedule}>
             {count === 0 ? (
-              "이후 등록된 수업이 없습니다."
+              "오늘 예정 수업이 없습니다."
             ) : (
               <>
                 <span>{`예정된 수업이 `}</span>
