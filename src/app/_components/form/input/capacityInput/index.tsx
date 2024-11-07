@@ -12,7 +12,7 @@ import {
 
 import { mergeRefs, numberFormat } from "@utils";
 
-import { IconInputValid } from "@assets";
+import { IconCapacity, IconInputValid } from "@assets";
 import styled from "./styles.module.scss";
 import { CapacityModal } from "@/_components/modal";
 import { useModal } from "@hooks";
@@ -97,9 +97,12 @@ function _CapacityInput(
         selectedCapacity={capacity}
         changeSelectedCapacity={changeCapacity}
         defaultCapacityValue={defaultCapacityValue}
-        placeholder="수용 인원"
+        placeholder="참여 가능 인원"
         valid={valid}
       />
+      <div className={styled.icon_wrapper}>
+        <IconCapacity width={20} height={20} />
+      </div>
       {valid && (
         <div
           className={`${styled.valid_wrapper} ${capacity ? "" : styled.empty}`}

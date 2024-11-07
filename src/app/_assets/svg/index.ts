@@ -13,6 +13,7 @@ import IconCalendarHome from "./icon_calendar_home.svg";
 import IconClass from "./icon_class.svg";
 import IconAdd from "./icon_add.svg";
 import IconClock from "./icon_clock.svg";
+import IconCapacity from "./icon_capacity.svg";
 
 export {
   IconKakao,
@@ -30,4 +31,5 @@ export {
   IconClass,
   IconAdd,
   IconClock,
+  IconCapacity,
 };

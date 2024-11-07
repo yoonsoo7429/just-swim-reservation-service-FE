@@ -94,8 +94,6 @@ export function FormBody({
     await onSubmit();
   };
 
-  console.log(watchFields);
-
   return (
     <div>
       <HistoryBackHeader
@@ -139,10 +137,10 @@ export function FormBody({
                     errorMessage={errors.courseDays?.message}
                   />
                 </InputWrapper>
-                <InputWrapper name="강좌 인원" required={true}>
+                <InputWrapper name="참여 가능 인원" required={true}>
                   <CapacityInput
                     {...register("courseCapacity")}
-                    placeholder="강좌 인원을 선택해주세요"
+                    placeholder="참여 가능 인원을 선택해주세요"
                     defaultValue={isModify ? course?.courseDays : ""}
                     valid={!errors.courseCapacity && !serverError.duplicate}
                     errorMessage={errors.courseCapacity?.message}
