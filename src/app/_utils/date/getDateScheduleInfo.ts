@@ -46,16 +46,16 @@ export async function getMonthlyScheduleInfo(
         );
       });
 
+      const courseData = {
+        ...course,
+        userType,
+        lecture: filteredCourses,
+      };
+
       if (
         filteredCourses.length > 0 ||
         selectedDays.includes(WEEK_DAYS_TO_ENG[i % 7])
       ) {
-        const courseData = {
-          ...course,
-          userType,
-          lecture: filteredCourses,
-        };
-
         nowInfo.courses.push(courseData);
       }
     }

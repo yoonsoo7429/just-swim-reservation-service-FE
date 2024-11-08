@@ -3,7 +3,6 @@ import { EditLectureProps } from "@types";
 
 export async function formAction(data: EditLectureProps, lectureId: string) {
   const result = await editLecture(data, lectureId);
-  console.log(result);
   if (result.success) {
     return { success: true };
   } else {

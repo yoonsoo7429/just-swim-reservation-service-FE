@@ -46,28 +46,31 @@ export function MemberList({
     today.setHours(0, 0, 0, 0);
 
     availableCourses.forEach((course) => {
-      if (course.lecture.length > 0) {
-        course.lecture.forEach((lecture) => {
-          if (lecture.lectureDate) {
-            const lectureDate = new Date(lecture.lectureDate);
-            lectureDate.setHours(0, 0, 0, 0);
-            if (lectureDate > today) {
-              availableDates.push(lectureDate);
+      const membersNum = course.lecture.length;
+      if (course.courseCapacity > membersNum) {
+        if (course.lecture.length > 0) {
+          course.lecture.forEach((lecture) => {
+            if (lecture.lectureDate) {
+              const lectureDate = new Date(lecture.lectureDate);
+              lectureDate.setHours(0, 0, 0, 0);
+              if (lectureDate > today) {
+                availableDates.push(lectureDate);
+              }
             }
-          }
-        });
-      } else {
-        const courseDays = course.courseDays
-          .split(",")
-          .map((day) => day.trim());
+          });
+        } else {
+          const courseDays = course.courseDays
+            .split(",")
+            .map((day) => day.trim());
 
-        for (let i = 0; i < 7; i++) {
-          const date = new Date(today);
-          date.setDate(today.getDate() + i);
-          const dayOfWeek = date.getDay();
+          for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            const dayOfWeek = date.getDay();
 
-          if (courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek])) {
-            availableDates.push(date);
+            if (courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek])) {
+              availableDates.push(date);
+            }
           }
         }
       }
