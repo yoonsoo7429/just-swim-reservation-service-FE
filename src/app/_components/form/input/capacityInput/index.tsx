@@ -25,7 +25,7 @@ const checkCapacityValue = (value: string) => {
 const CapacityBlock = ({
   selectedCapacity,
   changeSelectedCapacity,
-  defaultCapacityValue = "5",
+  defaultCapacityValue = "",
   placeholder = "",
   valid,
 }: {
@@ -75,8 +75,10 @@ function _CapacityInput(
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const flag = checkCapacityValue(defaultValue);
-  const [capacity, setCapacity] = useState<string>(flag ? defaultValue : "");
+  const flag = checkCapacityValue(defaultValue)
+    ? defaultValue
+    : defaultCapacityValue;
+  const [capacity, setCapacity] = useState<string>(flag);
 
   const changeCapacity = (newCapacity: string) => {
     setCapacity(newCapacity);

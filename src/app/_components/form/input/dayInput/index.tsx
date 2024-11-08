@@ -40,9 +40,9 @@ const makeInitialValue = (defaultValue: string): DayProps => {
   };
 
   if (defaultValue) {
-    defaultValue.split("").forEach((day) => {
+    defaultValue.split(",").forEach((day) => {
       // @ts-ignore
-      result[DAY_KOR_TO_ENG[day]] = true;
+      result[day.trim()] = true;
     });
   }
 
@@ -74,8 +74,8 @@ const makePrintValue = (days: DayProps) => {
 };
 
 const checkDefaultValue = (defaultValue: string) => {
-  const regexp = /[월화수목금토일]{1,7}$/g;
-
+  const regexp =
+    /^((Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?)+$/;
   return regexp.test(defaultValue);
 };
 
@@ -92,7 +92,6 @@ function _DayInput(
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 현재 선택된 색 관련
   const [days, setDays] = useState<DayProps>(
     checkDefaultValue(defaultValue)
       ? makeInitialValue(defaultValue)

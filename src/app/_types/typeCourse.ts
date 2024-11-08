@@ -131,3 +131,44 @@ export interface CourseDetailProps {
     lectureDeletedAt: string | null;
   }[];
 }
+
+export interface CourseDetailForEditProps {
+  courseId: string;
+  courseTitle: string;
+  courseDays: string;
+  courseTime: string;
+  courseCapacity: string;
+  courseCreatedAt: string;
+  courseUpdatedAt: string;
+  courseDeletedAt: string | null;
+  user: {
+    userId: string;
+    userType: string;
+    provider: string;
+    email: string;
+    userCreatedAt: string;
+    userUpdatedAt: string;
+  };
+  member: {
+    memberId: string;
+    memberCreatedAt: string;
+    memberUpdatedAt: string;
+    user: {
+      userId: string;
+      userType: string;
+      provider: string;
+      email: string;
+      userCreatedAt: string;
+      userUpdatedAt: string;
+    };
+  }[];
+  lecture: {
+    lectureId: string;
+    lectureDate: string;
+    lectureStartTime: string;
+    lectureEndTime: string;
+    lectureCreatedAt: string;
+    lectureUpdatedAt: string;
+    lectureDeletedAt: string | null;
+  }[];
+}

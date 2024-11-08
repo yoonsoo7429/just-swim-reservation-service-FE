@@ -13,11 +13,12 @@ import {
 } from "@components";
 import { IconCheckboxInvalid } from "@assets";
 
-import { formAction } from "./action";
+import { addFormAction } from "./addAction";
 import { courseSchema, courseType } from "./schema";
 
 import styled from "./styles.module.scss";
 import { CapacityInput } from "@/_components/form/input/capacityInput";
+import { modifyFormAction } from "./modifyAction";
 
 function InputWrapper({
   children,
@@ -83,11 +84,21 @@ export function FormBody({
       courseDays: input.courseDays,
     };
 
-    const result = await formAction(data, type, id);
+    if (type === "add") {
+      const result = await addFormAction(data);
 
-    setServerError({
-      ...result,
-    });
+      setServerError({
+        ...result,
+      });
+    }
+
+    if (type === "modify") {
+      const result = await modifyFormAction(data, id);
+
+      setServerError({
+        ...result,
+      });
+    }
   });
 
   const onValid = async () => {
@@ -141,7 +152,7 @@ export function FormBody({
                   <CapacityInput
                     {...register("courseCapacity")}
                     placeholder="참여 가능 인원을 선택해주세요"
-                    defaultValue={isModify ? course?.courseDays : ""}
+                    defaultValue={isModify ? course?.courseDays.toString() : ""}
                     valid={!errors.courseCapacity && !serverError.duplicate}
                     errorMessage={errors.courseCapacity?.message}
                   />

@@ -1,15 +1,10 @@
 "use server";
 
-import { updateCourse } from "@/_apis/course/updateCourse";
 import { createCourse, getInProgressSchedule } from "@apis";
 import { CourseBasicProps } from "@types";
 import { notFound, redirect } from "next/navigation";
 
-export async function formAction(
-  data: CourseBasicProps,
-  type: "add" | "modify",
-  id: string
-) {
+export async function addFormAction(data: CourseBasicProps) {
   const schedules = (await getInProgressSchedule()) || [];
 
   const errors = {
@@ -32,9 +27,8 @@ export async function formAction(
     for (const day of data.courseDays) {
       if (
         schedule.courseDays.includes(day) &&
-        ((inputStart >= targetStart && inputStart < targetEnd) ||
-          (inputEnd > targetStart && inputEnd <= targetEnd) ||
-          (inputStart <= targetStart && inputEnd >= targetEnd))
+        ((inputStart >= targetStart && inputStart <= targetEnd) ||
+          (inputEnd >= targetStart && inputEnd <= targetEnd))
       ) {
         valid = false;
         errors.duplicate = "같은 일정으로 등록된 수업이 있습니다.";
@@ -46,21 +40,11 @@ export async function formAction(
     return errors;
   }
 
-  if (type === "modify") {
-    const result = await updateCourse(data, id);
+  const result = await createCourse(data);
 
-    if (result.success) {
-      redirect(`/schedule`);
-    } else {
-      return notFound();
-    }
+  if (result.success) {
+    redirect(`/schedule/add/complete/${result.data.courseId}`);
   } else {
-    const result = await createCourse(data);
-
-    if (result.success) {
-      redirect(`/schedule/add/complete/${result.data.courseId}`);
-    } else {
-      return notFound();
-    }
+    return notFound();
   }
 }

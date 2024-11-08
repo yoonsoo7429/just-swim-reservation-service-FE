@@ -1,4 +1,4 @@
-import { getCourseDetail } from "@apis";
+import { getCourseDetailForEdit } from "@apis";
 
 import { FormBody } from "../../_components";
 
@@ -7,7 +7,7 @@ export default async function ScheduleEditPage({
 }: {
   params: { id: string };
 }) {
-  const courseDetail = await getCourseDetail(parseInt(params.id));
+  const courseDetail = await getCourseDetailForEdit(parseInt(params.id));
 
   return (
     <>
