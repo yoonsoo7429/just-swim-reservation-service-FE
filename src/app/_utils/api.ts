@@ -61,6 +61,7 @@ export async function Fetch<T>({
         credentials: header.credential ? "include" : "",
       },
       body: body && JSON.stringify(body),
+      cache: "no-store",
     });
 
     const result = await response.json();

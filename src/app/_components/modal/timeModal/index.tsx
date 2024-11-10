@@ -13,7 +13,6 @@ export function TimeModal({
   hideModal,
 }: TimeModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>(timeValue);
-
   const changeSelectedTime = (time: string) => {
     setSelectedTime(time);
   };

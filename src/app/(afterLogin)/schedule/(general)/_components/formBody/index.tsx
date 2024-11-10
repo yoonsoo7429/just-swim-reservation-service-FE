@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, MouseEvent, useEffect, useState } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -10,6 +10,7 @@ import {
   HistoryBackHeader,
   TextInput,
   TimeInput,
+  CapacityInput,
 } from "@components";
 import { IconCheckboxInvalid } from "@assets";
 
@@ -17,7 +18,6 @@ import { addFormAction } from "./addAction";
 import { courseSchema, courseType } from "./schema";
 
 import styled from "./styles.module.scss";
-import { CapacityInput } from "@/_components/form/input/capacityInput";
 import { modifyFormAction } from "./modifyAction";
 
 function InputWrapper({
@@ -152,7 +152,7 @@ export function FormBody({
                   <CapacityInput
                     {...register("courseCapacity")}
                     placeholder="참여 가능 인원을 선택해주세요"
-                    defaultValue={isModify ? course?.courseDays.toString() : ""}
+                    defaultValue={isModify ? course?.courseCapacity : ""}
                     valid={!errors.courseCapacity && !serverError.duplicate}
                     errorMessage={errors.courseCapacity?.message}
                   />

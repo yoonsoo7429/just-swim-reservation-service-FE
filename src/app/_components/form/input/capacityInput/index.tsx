@@ -17,15 +17,16 @@ import styled from "./styles.module.scss";
 import { CapacityModal } from "@/_components/modal";
 import { useModal } from "@hooks";
 
-const checkCapacityValue = (value: string) => {
+const checkCapacityValue = (defaultValue: string) => {
   const regexp = /^\d+$/;
-  return regexp.test(value);
+  console.log(defaultValue);
+  return regexp.test(defaultValue);
 };
 
 const CapacityBlock = ({
   selectedCapacity,
   changeSelectedCapacity,
-  defaultCapacityValue = "",
+  defaultCapacityValue = "5",
   placeholder = "",
   valid,
 }: {
@@ -53,7 +54,7 @@ const CapacityBlock = ({
       </div>
       {modal && (
         <CapacityModal
-          capacityValue={selectedCapacity}
+          capacityValue={selectedCapacity || defaultCapacityValue}
           setCapacityValue={changeSelectedCapacity}
           hideModal={hideModal}
         />
@@ -75,10 +76,8 @@ function _CapacityInput(
 ) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const flag = checkCapacityValue(defaultValue)
-    ? defaultValue
-    : defaultCapacityValue;
-  const [capacity, setCapacity] = useState<string>(flag);
+  const flag = checkCapacityValue(defaultValue);
+  const [capacity, setCapacity] = useState<string>(flag ? defaultValue : "");
 
   const changeCapacity = (newCapacity: string) => {
     setCapacity(newCapacity);
@@ -112,7 +111,12 @@ function _CapacityInput(
           <IconInputValid width={18} height={18} />
         </div>
       )}
-      {!valid && errorMessage && (
+      {checkCapacityValue(inputRef.current?.value || "") && errorMessage && (
+        <div className={styled.error_message}>
+          <p>{errorMessage}</p>
+        </div>
+      )}
+      {errorMessage && (
         <div className={styled.error_message}>
           <p>{errorMessage}</p>
         </div>

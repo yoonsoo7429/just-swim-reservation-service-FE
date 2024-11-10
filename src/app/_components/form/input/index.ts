@@ -6,3 +6,4 @@ export * from "./selectGenderInput";
 export * from "./addressInput";
 export * from "./careerInput";
 export * from "./timeInput";
+export * from "./capacityInput";
