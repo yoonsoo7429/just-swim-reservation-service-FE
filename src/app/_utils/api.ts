@@ -17,6 +17,7 @@ export async function APICommon<T>({
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
       },
       body: body && JSON.stringify(body),
+      cache: "no-store",
     });
 
     const result = await response.json();

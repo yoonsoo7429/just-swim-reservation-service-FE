@@ -14,6 +14,7 @@ export async function addFormAction(data: CourseBasicProps) {
   let valid = true;
   const inputStart = parseInt(data.courseStartTime.split(":").join(""));
   const inputEnd = parseInt(data.courseEndTime.split(":").join(""));
+  const inputDays = data.courseDays.split(",");
 
   for (const schedule of schedules) {
     if (data.courseTitle === schedule.courseTitle) {
@@ -23,12 +24,14 @@ export async function addFormAction(data: CourseBasicProps) {
 
     const targetStart = parseInt(schedule.courseStartTime.split(":").join(""));
     const targetEnd = parseInt(schedule.courseEndTime.split(":").join(""));
+    const targetDays = schedule.courseDays.split(",");
 
-    for (const day of data.courseDays) {
+    for (const day of inputDays) {
       if (
-        schedule.courseDays.includes(day) &&
-        ((inputStart >= targetStart && inputStart <= targetEnd) ||
-          (inputEnd >= targetStart && inputEnd <= targetEnd))
+        targetDays.includes(day) &&
+        ((inputStart > targetStart && inputStart < targetEnd) ||
+          (inputEnd > targetStart && inputEnd < targetEnd) ||
+          (inputStart < targetStart && inputEnd > targetEnd))
       ) {
         valid = false;
         errors.duplicate = "같은 일정으로 등록된 수업이 있습니다.";

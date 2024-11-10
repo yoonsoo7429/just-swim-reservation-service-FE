@@ -19,7 +19,6 @@ import { useModal } from "@hooks";
 
 const checkCapacityValue = (defaultValue: string) => {
   const regexp = /^\d+$/;
-  console.log(defaultValue);
   return regexp.test(defaultValue);
 };
 

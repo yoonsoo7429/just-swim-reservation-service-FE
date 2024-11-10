@@ -19,7 +19,6 @@ import styled from "./styles.module.scss";
 
 const checkValue = (defalutValue: string) => {
   const regexp = /\d{2}:\d{2}-\d{2}:\d{2}$/g;
-  console.log(defalutValue);
   return regexp.test(defalutValue);
 };
 
