@@ -9,7 +9,6 @@ import { useUserStore } from "@store";
 import { getMyProfile } from "@apis";
 import { UserType } from "@types";
 
-// TODO: fetch 캐싱 알아보기
 export default function Type() {
   const router = useRouter();
   const params = useSearchParams().get("token");

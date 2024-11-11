@@ -4,6 +4,7 @@ import {
   HTMLAttributes,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from "react";
@@ -14,6 +15,7 @@ import {
   getWeekNumber,
   numberFormat,
   randomId,
+  setTokenInCookies,
 } from "@utils";
 import { CalendarItemProps, ScheduleSummary } from "@types";
 import { useCalendar } from "@hooks";
