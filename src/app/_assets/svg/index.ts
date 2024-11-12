@@ -14,6 +14,7 @@ import IconClass from "./icon_class.svg";
 import IconAdd from "./icon_add.svg";
 import IconClock from "./icon_clock.svg";
 import IconCapacity from "./icon_capacity.svg";
+import IconValidWhite from "./icon_valid_white.svg";
 
 export {
   IconKakao,
@@ -32,4 +33,5 @@ export {
   IconAdd,
   IconClock,
   IconCapacity,
+  IconValidWhite,
 };

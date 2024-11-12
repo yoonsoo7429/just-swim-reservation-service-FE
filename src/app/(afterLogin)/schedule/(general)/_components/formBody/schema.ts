@@ -15,6 +15,7 @@ export const courseSchema = z
     courseDays: z.string().min(1, "수업 요일을 선택해주세요."),
     courseTime: z.string().min(1, "수업 시간을 입력해주세요"),
     courseCapacity: z.string().min(1, "최소 수강 인원은 1명입니다."),
+    courseColor: z.string(),
   })
   .superRefine(({ courseTime }, ctx) => {
     if (courseTime) {

@@ -21,6 +21,7 @@ export interface LectureProps {
     courseStartTime: string;
     courseEndTime: string;
     courseCapacity: number;
+    courseColor: string;
     courseCreatedAt: string;
     courseUpdatedAt: string;
     courseDeletedAt: string | null;

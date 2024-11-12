@@ -7,3 +7,4 @@ export * from "./addressInput";
 export * from "./careerInput";
 export * from "./timeInput";
 export * from "./capacityInput";
+export * from "./colorInput";

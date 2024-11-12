@@ -11,6 +11,7 @@ import {
   TextInput,
   TimeInput,
   CapacityInput,
+  ColorInput,
 } from "@components";
 import { IconCheckboxInvalid } from "@assets";
 
@@ -82,6 +83,7 @@ export function FormBody({
       courseEndTime: timeRange[1],
       courseCapacity: parseInt(input.courseCapacity),
       courseDays: input.courseDays,
+      courseColor: input.courseColor,
     };
 
     if (type === "add") {
@@ -155,6 +157,12 @@ export function FormBody({
                     defaultValue={isModify ? course?.courseCapacity : ""}
                     valid={!errors.courseCapacity && !serverError.duplicate}
                     errorMessage={errors.courseCapacity?.message}
+                  />
+                </InputWrapper>
+                <InputWrapper name="강좌 구분 색">
+                  <ColorInput
+                    {...register("courseColor")}
+                    defaultValue={isModify ? course?.courseColor : ""}
                   />
                 </InputWrapper>
               </div>

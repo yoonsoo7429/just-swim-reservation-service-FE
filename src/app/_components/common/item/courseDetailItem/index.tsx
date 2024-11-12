@@ -7,8 +7,6 @@ import { numberFormat } from "@utils";
 import styled from "./styles.module.scss";
 import { DAY_ENG_TO_KOR } from "@data";
 
-const primaryColor = "#3498db";
-
 export function CourseDetailItem({
   schedule,
   selectedDate,
@@ -40,11 +38,14 @@ export function CourseDetailItem({
       </div>
       <div
         className={styled.content}
-        style={{ boxShadow: `3px 0 0 0 ${primaryColor} inset` }}
+        style={{ boxShadow: `3px 0 0 0 ${schedule.courseColor} inset` }}
       >
         <div className={styled.main_info}>
           <div className={styled.title_info}>
-            <p className={styled.class_name} style={{ color: primaryColor }}>
+            <p
+              className={styled.class_name}
+              style={{ color: `${schedule.courseColor}` }}
+            >
               {schedule.courseTitle}
             </p>
             <p className={styled.class_info}>
@@ -70,7 +71,7 @@ export function CourseDetailItem({
             {schedule.lecture && schedule.lecture.length !== 0 ? (
               <div
                 className={styled.member_count}
-                style={{ color: `${primaryColor}` }}
+                style={{ color: `${schedule.courseColor}` }}
               >
                 <p>{capacityInfo}</p>
               </div>

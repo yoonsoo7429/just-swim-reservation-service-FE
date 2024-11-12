@@ -6,6 +6,7 @@ export interface CourseBasicProps {
   courseStartTime: string;
   courseEndTime: string;
   courseCapacity: number;
+  courseColor: string;
 }
 
 export interface CourseCreateProps {
@@ -14,6 +15,7 @@ export interface CourseCreateProps {
   courseStartTime: string;
   courseEndTime: string;
   courseCapacity: number;
+  courseColor: string;
   user: {
     userId: string;
   };
@@ -31,6 +33,7 @@ export interface CourseProps {
   courseStartTime: string;
   courseEndTime: string;
   courseCapacity: number;
+  courseColor: string;
   courseCreatedAt: string;
   courseUpdatedAt: string;
   courseDeletedAt: string | null;
@@ -97,6 +100,7 @@ export interface CourseDetailProps {
   courseStartTime: string;
   courseEndTime: string;
   courseCapacity: number;
+  courseColor: string;
   courseCreatedAt: string;
   courseUpdatedAt: string;
   courseDeletedAt: string | null;
@@ -138,6 +142,7 @@ export interface CourseDetailForEditProps {
   courseDays: string;
   courseTime: string;
   courseCapacity: string;
+  courseColor: string;
   courseCreatedAt: string;
   courseUpdatedAt: string;
   courseDeletedAt: string | null;

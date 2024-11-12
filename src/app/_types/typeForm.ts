@@ -66,3 +66,8 @@ export interface CapacityInputProps {
   defaultValue?: string;
   defaultCapacityValue?: string;
 }
+
+export interface ColorInputProps {
+  name: string;
+  defaultValue?: string;
+}
