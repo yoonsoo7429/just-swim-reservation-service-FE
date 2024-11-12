@@ -56,39 +56,49 @@
     }
   }
 
-  .qr_code {
-    margin-top: 12px;
+  .courseInfo1 {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: $--White;
+    border-radius: 10px;
+    outline: 1px solid $--gray-200;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    .days {
+      @include Title3-M;
+    }
+
+    .time {
+      @include Title3-M;
+    }
   }
 
-  .qr_button_wrapper {
-    margin-top: 12px;
-
+  .courseInfo2 {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: $--White;
+    border-radius: 10px;
+    outline: 1px solid $--gray-200;
     display: flex;
-    gap: 20px;
+    flex-direction: row;
+    gap: 8px;
 
-    .qr_button {
+    .capacity {
+      @include Title3-M;
+    }
+
+    .color {
+      @include Title3-M;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      gap: 8px;
 
-      gap: 6px;
-
-      .icon_wrapper {
-        width: 40px;
-        height: 40px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background-color: $--White;
-
-        border-radius: 50%;
-        border: 1px solid $--gray-200;
-      }
-
-      & > span {
-        @include Body4-R;
+      .color_sample {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
       }
     }
   }
