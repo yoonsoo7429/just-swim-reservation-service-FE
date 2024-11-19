@@ -4,7 +4,6 @@ import {
   HTMLAttributes,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
 } from "react";
@@ -15,7 +14,6 @@ import {
   getWeekNumber,
   numberFormat,
   randomId,
-  setTokenInCookies,
 } from "@utils";
 import { CalendarItemProps, ScheduleSummary } from "@types";
 import { useCalendar } from "@hooks";
@@ -28,14 +26,14 @@ import styled from "./styles.module.scss";
 
 const itemHeight = 70;
 
-const primaryColor = "#3498db";
-
 export function MonthlyWrapper() {
   const [monthlyInfo, setMonthlyInfo] = useState<ScheduleSummary[] | []>([]);
   const [show, setShow] = useState<boolean>(false);
   const [y, setY] = useState<number>(0);
 
   const today = useMemo(() => getToday(), []);
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
 
   const CourseCalendarItem = useCallback(
     ({
@@ -74,9 +72,9 @@ export function MonthlyWrapper() {
                       className={styled.dot}
                       style={{
                         backgroundColor:
-                          new Date(nowDate) < today || isDisabled
-                            ? ""
-                            : schedule.courseColor,
+                          new Date(nowDate) >= yesterday && !isDisabled
+                            ? schedule.courseColor
+                            : "",
                       }}
                     />
                   );

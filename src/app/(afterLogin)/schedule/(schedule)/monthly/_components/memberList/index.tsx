@@ -31,6 +31,13 @@ export function MemberList({
     [key: string]: boolean;
   }>({});
 
+  // 오늘 날짜
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const courseDate = new Date(selectedDate);
+  courseDate.setHours(0, 0, 0, 0);
+
   const getAvailableDates = (userId: string) => {
     const availableCourses = courses
       .flatMap((schedule) =>
@@ -42,19 +49,31 @@ export function MemberList({
       );
 
     const availableDates: Date[] = [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
     availableCourses.forEach((course) => {
       const membersNum = course.lecture.length;
+
+      // 강좌 수용 가능 여부 확인
       if (course.courseCapacity > membersNum) {
         if (course.lecture.length > 0) {
           course.lecture.forEach((lecture) => {
             if (lecture.lectureDate) {
               const lectureDate = new Date(lecture.lectureDate);
               lectureDate.setHours(0, 0, 0, 0);
-              if (lectureDate > today) {
+
+              const threeDaysLater = new Date(today);
+              threeDaysLater.setDate(today.getDate() + 3);
+              threeDaysLater.setHours(0, 0, 0, 0);
+
+              if (
+                courseDate.getTime() === today.getTime() &&
+                lectureDate >= threeDaysLater
+              ) {
                 availableDates.push(lectureDate);
+              } else if (courseDate.getTime() !== today.getTime()) {
+                if (lectureDate > today) {
+                  availableDates.push(lectureDate);
+                }
               }
             }
           });
@@ -66,9 +85,24 @@ export function MemberList({
           for (let i = 0; i < 30; i++) {
             const date = new Date(today);
             date.setDate(today.getDate() + i);
+            date.setHours(0, 0, 0, 0);
             const dayOfWeek = date.getDay();
 
-            if (courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek])) {
+            const threeDaysLater = new Date(today);
+            threeDaysLater.setDate(today.getDate() + 3);
+            threeDaysLater.setHours(0, 0, 0, 0);
+
+            if (
+              courseDate.getTime() === today.getTime() &&
+              date >= threeDaysLater &&
+              courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek])
+            ) {
+              availableDates.push(date);
+            } else if (
+              courseDate.getTime() !== today.getTime() &&
+              date > today &&
+              courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek])
+            ) {
               availableDates.push(date);
             }
           }
@@ -77,6 +111,7 @@ export function MemberList({
     });
 
     return (date: Date) => {
+      date.setHours(0, 0, 0, 0);
       return (
         date > today &&
         availableDates.some(
@@ -141,7 +176,7 @@ export function MemberList({
             lectureEndTime: course.courseEndTime,
           };
 
-          const result = await formAction(data, lectureId);
+          await formAction(data, lectureId);
           onDateChange(lectureId, formattedDate);
 
           setSelectedEditDate(null);
@@ -167,13 +202,6 @@ export function MemberList({
       [memberId]: !prev[memberId],
     }));
   };
-
-  // 오늘 날짜
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const courseDate = new Date(selectedDate);
-  courseDate.setHours(0, 0, 0, 0);
 
   return (
     <div className={styled.memberList}>
@@ -242,7 +270,7 @@ export function MemberList({
                     </div>
                   </>
                 ) : (
-                  courseDate > today && (
+                  courseDate >= today && (
                     <button
                       onClick={() => toggleDatePicker(member.lectureId)}
                       className={styled.dateChangeButton}
