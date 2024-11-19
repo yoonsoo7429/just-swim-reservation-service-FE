@@ -25,7 +25,7 @@ const checkCapacityValue = (defaultValue: string) => {
 const CapacityBlock = ({
   selectedCapacity,
   changeSelectedCapacity,
-  defaultCapacityValue = "5",
+  defaultCapacityValue = "6",
   placeholder = "",
   valid,
 }: {
@@ -67,7 +67,7 @@ function _CapacityInput(
     name,
     valid = true,
     defaultValue = "",
-    defaultCapacityValue = "5",
+    defaultCapacityValue = "6",
     errorMessage = "",
     ...props
   }: CapacityInputProps & InputHTMLAttributes<HTMLInputElement>,
