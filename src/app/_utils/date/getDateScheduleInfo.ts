@@ -1,6 +1,6 @@
 "use server";
 
-import { getInProgressSchedule, getCachedMyProfile } from "@apis";
+import { getInProgressSchedule, getMyProfile } from "@apis";
 import { sortSchedule } from "@utils";
 import { ScheduleSummary } from "@types";
 import { WEEK_DAYS, WEEK_DAYS_TO_ENG } from "@data";
@@ -14,8 +14,8 @@ export async function getMonthlyScheduleInfo(
   const thisMonthInfo = getMonth();
   const scheduleInfo = (await getInProgressSchedule()) || [];
 
-  const userInfo = await getCachedMyProfile();
-  const userType = userInfo?.userType ?? null;
+  const userInfo = await getMyProfile();
+  const userType = userInfo?.data.data.userType ?? null;
 
   const today = new Date();
   const year = new Date().getFullYear();
