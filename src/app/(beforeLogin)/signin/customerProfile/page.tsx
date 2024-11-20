@@ -133,14 +133,28 @@ export default function CustomerProfile() {
                   errorMessage={errors.customerGender?.message}
                 />
               </InputWrapper>
-              <InputWrapper name="주소" required={true}>
+              <InputWrapper name="승차 위치" required={true}>
                 <AddressInput
-                  {...register("customerAddress", {
-                    required: "주소를 입력해주세요",
+                  {...register("customerPickUpLocation", {
+                    required: "승차 위치를 입력해주세요",
                   })}
-                  placeholder="주소를 입력해주세요"
-                  valid={!errors.customerAddress && !serverError.duplicate}
-                  errorMessage={errors.customerAddress?.message}
+                  placeholder="위치 입력"
+                  valid={
+                    !errors.customerPickUpLocation && !serverError.duplicate
+                  }
+                  errorMessage={errors.customerPickUpLocation?.message}
+                />
+              </InputWrapper>
+              <InputWrapper name="하차 위치" required={true}>
+                <AddressInput
+                  {...register("customerDropOffLocation", {
+                    required: "하차 위치를 입력해주세요",
+                  })}
+                  placeholder="위치 입력"
+                  valid={
+                    !errors.customerDropOffLocation && !serverError.duplicate
+                  }
+                  errorMessage={errors.customerDropOffLocation?.message}
                 />
               </InputWrapper>
             </div>

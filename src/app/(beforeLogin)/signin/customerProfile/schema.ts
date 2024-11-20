@@ -19,7 +19,8 @@ export const customerProfileSchema = z.object({
     .string()
     .min(1, "성별을 선택해주세요.")
     .regex(/^(남성|여성)$/, "성별은 '남성' 또는 '여성'만 가능합니다."),
-  customerAddress: z.string().min(1, "주소를 입력해주세요."),
+  customerPickUpLocation: z.string().min(1, "승차 위치를 입력해주세요."),
+  customerDropOffLocation: z.string().min(1, "하차 위치를 입력해주세요."),
 });
 
 export type CustomerProfileType = z.infer<typeof customerProfileSchema>;

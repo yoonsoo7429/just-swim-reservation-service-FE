@@ -4,7 +4,8 @@ export interface CustomerBasicProps {
   customerBirth: string;
   customerPhoneNumber: string;
   customerGender: string;
-  customerAddress: string;
+  customerPickUpLocation: string;
+  customerDropOffLocation: string;
 }
 
 export interface CustomerProps {
@@ -14,7 +15,8 @@ export interface CustomerProps {
   customerBirth: string;
   customerPhoneNumber: string;
   customerGender: string;
-  customerAddress: string;
+  customerPickUpLocation: string;
+  customerDropOffLocation: string;
   user: {
     userId: string;
   };
