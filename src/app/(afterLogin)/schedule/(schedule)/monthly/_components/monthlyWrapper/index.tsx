@@ -46,6 +46,7 @@ export function MonthlyWrapper() {
       ...props
     }: CalendarItemProps & HTMLAttributes<HTMLButtonElement>) => {
       const nowDate = `${numberFormat(year)}.${numberFormat(month + 1)}.${numberFormat(date)}`;
+
       const nowDateInfo = monthlyInfo.filter(
         (info) => info.date === nowDate
       )[0];

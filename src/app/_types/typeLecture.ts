@@ -1,4 +1,7 @@
+import { UserType } from "./users";
+
 export interface LectureProps {
+  userType: UserType | null;
   lectureId: string;
   lectureDate: string;
   lectureStartTime: string;
@@ -13,6 +16,17 @@ export interface LectureProps {
     email: string;
     userCreatedAt: string;
     userUpdatedAt: string;
+    customer: {
+      customerId: string;
+      customerName: string;
+      customerProfileImage: string | null;
+      customerBirth: string;
+      customerPhoneNumber: string;
+      customerGender: string;
+      customerAddress: string;
+      customerCreatedAt: string;
+      customerUpdatedAt: string;
+    }[];
   };
   course: {
     courseId: string;
