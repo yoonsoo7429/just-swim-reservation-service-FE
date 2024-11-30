@@ -75,7 +75,7 @@ export interface CourseProps {
   }[];
 }
 
-export interface ScheduleSummary {
+export interface ScheduleSummaryForInstructor {
   date: string;
   day: string;
   courses: CourseProps[];

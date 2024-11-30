@@ -1,11 +1,11 @@
 "use server";
 
-import { updateCourse, getInProgressSchedule } from "@apis";
+import { updateCourse, getInProgressScheduleForInstructor } from "@apis";
 import { CourseBasicProps } from "@types";
 import { notFound, redirect } from "next/navigation";
 
 export async function modifyFormAction(data: CourseBasicProps, id: string) {
-  const schedules = (await getInProgressSchedule()) || [];
+  const schedules = (await getInProgressScheduleForInstructor()) || [];
 
   const errors = {
     title: "",

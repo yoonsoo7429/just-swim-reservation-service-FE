@@ -1,30 +1,26 @@
 import Image from "next/image";
 
 import { IconRepeat, NoProfileImage } from "@assets";
-import { CourseProps } from "@types";
+import { CourseProps, LectureProps } from "@types";
 import { numberFormat } from "@utils";
 
 import styled from "./styles.module.scss";
 import { DAY_ENG_TO_KOR } from "@data";
 
-export function CourseDetailItem({
+export function CourseDetailItemForCustomer({
   schedule,
   selectedDate,
 }: {
-  schedule: CourseProps;
+  schedule: LectureProps;
   selectedDate: string;
 }) {
-  const startTime = parseInt(schedule.courseStartTime.split(":")[0]);
+  const startTime = parseInt(schedule.lectureStartTime.split(":")[0]);
 
-  const members = schedule.lecture.filter(
-    (lecture) => lecture.lectureDate === selectedDate.replace(/\./g, "-")
-  );
-
-  const memberCount = members.length;
-  const capacityInfo = `${memberCount}명/${schedule.courseCapacity}명`;
+  const memberCount = schedule.course.lecture.length;
+  const capacityInfo = `${memberCount}명/${schedule.course.courseCapacity}명`;
 
   // 요일 변환
-  const translatedDays = schedule.courseDays
+  const translatedDays = schedule.course.courseDays
     .split(",")
     .map((day) => DAY_ENG_TO_KOR[day.trim() as keyof typeof DAY_ENG_TO_KOR]);
 
@@ -38,23 +34,23 @@ export function CourseDetailItem({
       </div>
       <div
         className={styled.content}
-        style={{ boxShadow: `3px 0 0 0 ${schedule.courseColor} inset` }}
+        style={{ boxShadow: `3px 0 0 0 ${schedule.course.courseColor} inset` }}
       >
         <div className={styled.main_info}>
           <div className={styled.title_info}>
             <p
               className={styled.class_name}
-              style={{ color: `${schedule.courseColor}` }}
+              style={{ color: `${schedule.course.courseColor}` }}
             >
-              {schedule.courseTitle}
+              {schedule.course.courseTitle}
             </p>
             <p className={styled.class_info}>
-              {schedule.courseStartTime}-{schedule.courseEndTime}
+              {schedule.course.courseStartTime}-{schedule.course.courseEndTime}
             </p>
           </div>
 
           <div className={styled.member_info}>
-            {members.map((lecture, index) => (
+            {schedule.course.lecture.map((lecture, index) => (
               <div key={index} className={styled.member}>
                 <Image
                   src={
@@ -68,10 +64,10 @@ export function CourseDetailItem({
                 />
               </div>
             ))}
-            {schedule.lecture && schedule.lecture.length !== 0 ? (
+            {schedule.course.lecture && schedule.course.lecture.length !== 0 ? (
               <div
                 className={styled.member_count}
-                style={{ color: `${schedule.courseColor}` }}
+                style={{ color: `${schedule.course.courseColor}` }}
               >
                 <p>{capacityInfo}</p>
               </div>

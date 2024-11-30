@@ -2,7 +2,11 @@
 
 import { MouseEvent, TouchEvent, useRef, useState } from "react";
 import { CourseForMemberInfoProps, CourseProps } from "@types";
-import { CourseDetailItem, Portal, StatusModal } from "@components";
+import {
+  CourseDetailItemForInstructor,
+  Portal,
+  StatusModal,
+} from "@components";
 import { randomId, throttle } from "@utils";
 import { WEEK_DAYS } from "@data";
 import styled from "./styles.module.scss";
@@ -169,7 +173,7 @@ export function CourseList({
                     )
                   }
                 >
-                  <CourseDetailItem
+                  <CourseDetailItemForInstructor
                     schedule={schedule}
                     selectedDate={selectedDate}
                   />

@@ -1,4 +1,5 @@
-export * from "./getInProgressSchedule";
+export * from "./getInProgressScheduleForInstructor";
+export * from "./getInProgressScheduleForcustomer";
 export * from "./createCourse";
 export * from "./getCourseDetail";
 export * from "./getCourseDetailForEdit";

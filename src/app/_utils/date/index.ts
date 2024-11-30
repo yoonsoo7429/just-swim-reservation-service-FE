@@ -1,2 +1,3 @@
 export * from "./getDateInfo";
-export * from "./getDateScheduleInfo";
+export * from "./getDateScheduleInfoForInstructor";
+export * from "./getDateScheduleInfoForCustomer";

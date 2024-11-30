@@ -9,13 +9,13 @@ import {
 } from "react";
 
 import {
-  getMonthlyScheduleInfo,
+  getMonthlyScheduleInfoForCustomer,
   getToday,
   getWeekNumber,
   numberFormat,
   randomId,
 } from "@utils";
-import { CalendarItemProps, ScheduleSummary } from "@types";
+import { CalendarItemProps, ScheduleSummaryForCustomer } from "@types";
 import { useCalendar } from "@hooks";
 
 import { MonthlyCalendar } from "../monthlyCalendar";
@@ -27,7 +27,9 @@ import styled from "./styles.module.scss";
 const itemHeight = 70;
 
 export function MonthlyWrapper() {
-  const [monthlyInfo, setMonthlyInfo] = useState<ScheduleSummary[] | []>([]);
+  const [monthlyInfo, setMonthlyInfo] = useState<
+    ScheduleSummaryForCustomer[] | []
+  >([]);
   const [show, setShow] = useState<boolean>(false);
   const [y, setY] = useState<number>(0);
 
@@ -62,7 +64,7 @@ export function MonthlyWrapper() {
           {nowDateInfo && (
             <div className={styled.dot_wrapper}>
               <div key={randomId()} className={styled.count}>
-                {nowDateInfo.courses.map((schedule, index) => {
+                {nowDateInfo.lectures.map((schedule, index) => {
                   if (index >= 5) {
                     return null;
                   }
@@ -74,7 +76,7 @@ export function MonthlyWrapper() {
                       style={{
                         backgroundColor:
                           new Date(nowDate) >= yesterday && !isDisabled
-                            ? schedule.courseColor
+                            ? schedule.course.courseColor
                             : "",
                       }}
                     />
@@ -104,7 +106,7 @@ export function MonthlyWrapper() {
 
   useEffect(() => {
     const getMonthInfo = async () => {
-      const result = await getMonthlyScheduleInfo(
+      const result = await getMonthlyScheduleInfoForCustomer(
         `${currentYear}.${currentMonth + 1}`
       );
 

@@ -1,7 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { CourseForMemberInfoProps, CourseProps, ScheduleSummary } from "@types";
+import {
+  CourseForMemberInfoProps,
+  LectureProps,
+  ScheduleSummaryForCustomer,
+} from "@types";
 import { NoProfileImage } from "@assets";
 import styled from "./styles.module.scss";
 import DatePicker from "react-datepicker";
@@ -12,20 +16,20 @@ import { formAction } from "./action";
 export function MemberList({
   members,
   userType,
-  courses,
+  lectures,
   selectedDate,
   onDateChange,
 }: {
   members: CourseForMemberInfoProps[];
   userType: string | null;
-  courses: ScheduleSummary[];
+  lectures: ScheduleSummaryForCustomer[];
   selectedDate: string;
   onDateChange: (lectureId: string, newDate: string) => void;
 }) {
   const [selectedEditDate, setSelectedEditDate] = useState<Date | null>(null);
-  const [availableCourseList, setAvailableCourseList] = useState<CourseProps[]>(
-    []
-  );
+  const [availableCourseList, setAvailableCourseList] = useState<
+    LectureProps[]
+  >([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [showDatePicker, setShowDatePicker] = useState<{
     [key: string]: boolean;
@@ -39,24 +43,27 @@ export function MemberList({
   courseDate.setHours(0, 0, 0, 0);
 
   const getAvailableDates = (userId: string) => {
-    const availableCourses = courses
+    const availableCourses = lectures
       .flatMap((schedule) =>
-        schedule.courses.filter((course) => course.user.userId === userId)
+        schedule.lectures.filter(
+          (lecture) => lecture.course.user.userId === userId
+        )
       )
       .filter(
-        (course, index, self) =>
-          index === self.findIndex((c) => c.courseId === course.courseId)
+        (lecture, index, self) =>
+          index ===
+          self.findIndex((c) => c.course.courseId === lecture.course.courseId)
       );
 
     const availableDates: Date[] = [];
 
-    availableCourses.forEach((course) => {
-      const membersNum = course.lecture.length;
+    availableCourses.forEach((lecture) => {
+      const membersNum = lecture.course.lecture.length;
 
       // 강좌 수용 가능 여부 확인
-      if (course.courseCapacity > membersNum) {
-        if (course.lecture.length > 0) {
-          course.lecture.forEach((lecture) => {
+      if (lecture.course.courseCapacity > membersNum) {
+        if (lecture.course.lecture.length > 0) {
+          lecture.course.lecture.forEach((lecture) => {
             if (lecture.lectureDate) {
               const lectureDate = new Date(lecture.lectureDate);
               lectureDate.setHours(0, 0, 0, 0);
@@ -78,7 +85,7 @@ export function MemberList({
             }
           });
         } else {
-          const courseDays = course.courseDays
+          const courseDays = lecture.course.courseDays
             .split(",")
             .map((day) => day.trim());
 
@@ -125,25 +132,26 @@ export function MemberList({
   const handleDateChange = (date: Date | null, memberId: string) => {
     setSelectedEditDate(date);
     if (date) {
-      const filteredCourses = courses
-        .flatMap((schedule) => schedule.courses)
-        .filter((course) => {
-          const courseDays = course.courseDays
+      const filteredCourses = lectures
+        .flatMap((schedule) => schedule.lectures)
+        .filter((lecture) => {
+          const courseDays = lecture.course.courseDays
             .split(",")
             .map((day) => day.trim());
           const dayOfWeek = date.getDay();
           return (
-            course.user.userId === memberId &&
-            (course.lecture.some(
+            lecture.course.user.userId === memberId &&
+            (lecture.course.lecture.some(
               (lecture) =>
                 lecture.lectureDate === date.toISOString().split("T")[0]
             ) ||
               courseDays.includes(WEEK_DAYS_TO_ENG[dayOfWeek]))
           );
         });
+
       const uniqueCourses = Array.from(
         new Map(
-          filteredCourses.map((course) => [course.courseId, course])
+          filteredCourses.map((lecture) => [lecture.course.courseId, lecture])
         ).values()
       );
 
@@ -161,19 +169,19 @@ export function MemberList({
         .toISOString()
         .split("T")[0];
 
-      const course = courses
-        .flatMap((schedule) => schedule.courses)
-        .find((course) => course.courseId === courseId);
+      const lecture = lectures
+        .flatMap((schedule) => schedule.lectures)
+        .find((lecture) => lecture.course.courseId === courseId);
 
-      if (course) {
-        const courseCapacity = course.courseCapacity;
-        const membersNum = course.lecture.length;
+      if (lecture) {
+        const courseCapacity = lecture.course.courseCapacity;
+        const membersNum = lecture.course.lecture.length;
         if (courseCapacity > membersNum) {
           const data = {
-            courseId: Number(course.courseId),
+            courseId: Number(lecture.course.courseId),
             lectureDate: formattedDate,
-            lectureStartTime: course.courseStartTime,
-            lectureEndTime: course.courseEndTime,
+            lectureStartTime: lecture.course.courseStartTime,
+            lectureEndTime: lecture.course.courseEndTime,
           };
 
           await formAction(data, lectureId);
@@ -244,10 +252,14 @@ export function MemberList({
                         <option value="" disabled>
                           시간을 선택해주세요
                         </option>
-                        {availableCourseList.map((course) => (
-                          <option key={course.courseId} value={course.courseId}>
-                            {course.courseTitle} : {course.courseStartTime} -{" "}
-                            {course.courseEndTime}
+                        {availableCourseList.map((lecture) => (
+                          <option
+                            key={lecture.course.courseId}
+                            value={lecture.course.courseId}
+                          >
+                            {lecture.course.courseTitle} :{" "}
+                            {lecture.course.courseStartTime} -{" "}
+                            {lecture.course.courseEndTime}
                           </option>
                         ))}
                       </select>

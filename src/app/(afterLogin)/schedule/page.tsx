@@ -1,15 +1,28 @@
 "use client";
 
 import { useUserStore } from "@store";
-import { setTokenInCookies } from "@utils";
-import { redirect, useSearchParams } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
+import { getTokenInCookies, setTokenInCookies } from "@utils";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export default function Schedule() {
   const params = useSearchParams().get("token");
   const [token, setToken] = useState<string>();
+  const router = useRouter();
 
   const { setAddUserToken } = useUserStore();
+
+  useEffect(() => {
+    const checkCookies = async () => {
+      const isLogin = await getTokenInCookies();
+      if (!isLogin) {
+        return;
+      } else {
+        router.push("/schedule/monthly");
+      }
+    };
+    checkCookies();
+  }, [router]);
 
   useLayoutEffect(() => {
     const checkToken = async () => {

@@ -1,18 +1,18 @@
 "use server";
 
-import { getInProgressSchedule, getMyProfile } from "@apis";
-import { sortSchedule } from "@utils";
-import { ScheduleSummary } from "@types";
+import { getInProgressScheduleForInstructor, getMyProfile } from "@apis";
+import { sortScheduleForInstructor } from "@utils";
+import { ScheduleSummaryForInstructor } from "@types";
 import { WEEK_DAYS, WEEK_DAYS_TO_ENG } from "@data";
 
 import { getMonth, getToday } from "./getDateInfo";
 
-export async function getMonthlyScheduleInfo(
+export async function getMonthlyScheduleInfoForInstructor(
   month: string
-): Promise<ScheduleSummary[] | []> {
+): Promise<ScheduleSummaryForInstructor[] | []> {
   const result = [];
   const thisMonthInfo = getMonth();
-  const scheduleInfo = (await getInProgressSchedule()) || [];
+  const scheduleInfo = (await getInProgressScheduleForInstructor()) || [];
 
   const userInfo = await getMyProfile();
   const userType = userInfo?.data.data.userType ?? null;
@@ -27,7 +27,7 @@ export async function getMonthlyScheduleInfo(
   const formattedEndOfMonth = `${year}-${String(currentMonth + 1).padStart(2, "0")}-${String(endOfMonth.getDate()).padStart(2, "0")}`;
 
   for (let i = 0; i < thisMonthInfo.length; i++) {
-    const nowInfo: ScheduleSummary = {
+    const nowInfo: ScheduleSummaryForInstructor = {
       date: thisMonthInfo[i],
       day: WEEK_DAYS[i % 7],
       courses: [],
@@ -60,17 +60,17 @@ export async function getMonthlyScheduleInfo(
       }
     }
 
-    nowInfo.courses.sort(sortSchedule);
+    nowInfo.courses.sort(sortScheduleForInstructor);
     result.push(nowInfo);
   }
 
   return result;
 }
 
-export async function getTodayScheduleCount() {
+export async function getTodayScheduleCountForInstructor() {
   const today = getToday();
   const month = today.getMonth().toString();
-  const scheduleInfo = await getMonthlyScheduleInfo(month);
+  const scheduleInfo = await getMonthlyScheduleInfoForInstructor(month);
 
   return scheduleInfo[today.getDay()]?.courses.length;
 }

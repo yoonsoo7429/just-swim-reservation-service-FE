@@ -1,2 +1,3 @@
 export * from "./modalCalendarItem";
-export * from "./courseDetailItem";
+export * from "./courseDetailItemForInstructor";
+export * from "./courseDetailItemForCustomer";

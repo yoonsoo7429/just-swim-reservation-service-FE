@@ -1,0 +1,138 @@
+@import "@/globals.scss";
+
+.memberList {
+  padding: 16px;
+  background-color: $--White;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  h4 {
+    @include Title3-SB;
+    margin-bottom: 16px;
+    color: $--Black;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .memberItem {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: $--Chips;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .memberInfo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      margin-right: 10px;
+
+      p {
+        margin: 0;
+        @include Body3-R;
+        color: $--gray-900;
+
+        &:first-child {
+          margin-bottom: 5px;
+        }
+      }
+    }
+
+    .lectureDateInput {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      margin-left: 10px;
+
+      input,
+      select {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid $--gray-300;
+        font-size: 14px;
+        color: $--Black;
+
+        &:focus {
+          outline: none;
+          border-color: $--Primary-blue;
+        }
+      }
+    }
+
+    .buttonContainer {
+      display: flex;
+      gap: 4px;
+    }
+
+    .moveSlotButton {
+      display: flex;
+      justify-content: flex-end;
+      padding: 4px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      background-color: $--Primary-blue;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+
+      &:hover {
+        background-color: $--Primary-blue;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+    }
+
+    .dateChangeButton {
+      background-color: $--Primary-blue;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $--Primary-blue;
+      }
+    }
+
+    .cancelButton {
+      background-color: $--Primary-blue;
+      color: white;
+      padding: 4px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 4px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+
+      &:hover {
+        background-color: $--Primary-blue;
+      }
+    }
+  }
+}
